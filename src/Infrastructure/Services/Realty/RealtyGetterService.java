@@ -10,7 +10,7 @@ import java.util.Collection;
 public class RealtyGetterService implements RealtyGetter {
 
     @Override
-    public Collection<RealtyDto> GetRealty(Integer limit) {
+    public Collection<RealtyDto> getRealty(Integer limit) {
         var data = Data.getRealty();
 
         var filteredRealty = ApplyFilters(data, limit);

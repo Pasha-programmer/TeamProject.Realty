@@ -1,5 +1,6 @@
 package ConsoleUI.Menu.Contracts.Common;
 
+import ConsoleUI.Menu.Components.ConsoleComponent;
 import ConsoleUI.Menu.Contracts.Models.Enums.EnumWithNumber;
 import ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
 
@@ -8,7 +9,7 @@ import java.util.Scanner;
 /**
  * Базовое представление меню в консоли.
  */
-public abstract class ConsoleStageMenu {
+public abstract class ConsoleStageMenu extends ConsoleComponent {
 
     protected static final Scanner SCANNER = new Scanner(System.in);
 
