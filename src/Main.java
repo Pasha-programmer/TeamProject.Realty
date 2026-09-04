@@ -1,5 +1,6 @@
 import ConsoleUI.Menu.Contracts.Common.ConsoleStageMenu;
 import ConsoleUI.Menu.MainMenu;
+import Domain.Models.RealtyDto;
 import Infrastructure.Services.Realty.RealtyGetterService;
 
 void main() {

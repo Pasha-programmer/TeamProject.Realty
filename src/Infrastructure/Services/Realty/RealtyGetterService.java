@@ -15,13 +15,12 @@ public class RealtyGetterService implements RealtyGetter {
 
         var filteredRealty = ApplyFilters(data, limit);
 
-        return filteredRealty.stream().map(r -> {
-            var dto = new RealtyDto();
-            dto.address = r.address;
-            dto.cost = r.cost;
-            dto.totalArea = r.totalArea;
-            return  dto;
-        }).toList();
+        return filteredRealty.stream().map(r -> RealtyDto.RealtyBuilder.create()
+                .setAddress(r.address)
+                .setCost(r.cost)
+                .setTotalArea(r.totalArea)
+                .build())
+            .toList();
     }
 
     /**

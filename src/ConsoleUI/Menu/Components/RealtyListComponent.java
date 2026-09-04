@@ -34,6 +34,8 @@ public class RealtyListComponent extends ConsoleComponent {
     }
 
     private String FormatRealty(RealtyDto realty){
-        return "Адрес: " + realty.address + "\tПлощадь: " + realty.totalArea + "м2 \tСтоимость: " + realty.cost + "руб.";
+        return "Адрес: " + realty.getAddress()
+                + "\tПлощадь: " + realty.getTotalArea() + "м2"
+                + "\tСтоимость: " + realty.getCost() + "руб.";
     }
 }
