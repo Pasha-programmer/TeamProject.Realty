@@ -1,13 +1,22 @@
 package ConsoleUI.Menu;
 
+import ConsoleUI.Menu.Components.ConsoleComponent;
+import ConsoleUI.Menu.Components.RealtyListComponent;
 import ConsoleUI.Menu.Contracts.Common.ConsoleStageMenu;
 import ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
+import Domain.Contracts.Realty.RealtyGetter;
 
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 public final class MainMenu extends ConsoleStageMenu {
+
+    public MainMenu(RealtyGetter realtyGetter){
+        realtyListComponent = new RealtyListComponent(realtyGetter);
+    }
+
+    private final ConsoleComponent realtyListComponent;
 
     private final static SortedMap<MainMenuOptions, String> menuOptionsMap = new TreeMap<>(
         Map.ofEntries(
@@ -21,11 +30,22 @@ public final class MainMenu extends ConsoleStageMenu {
     private static boolean IS_RUN = true;
 
     @Override
+    public void print() {
+        System.out.println("\nГлавное меню:");
+
+        menuOptionsMap.forEach((key, value) -> {
+            System.out.println("\t" + key.getValue() + ". " + value);
+        });
+
+        System.out.print("Выберите опцию: ");
+    }
+
+    @Override
     public void run() {
         printHeader();
 
         while(IS_RUN){
-            printMainMenu();
+            print();
 
             var choice = readOption(MainMenuOptions.class);
 
@@ -35,7 +55,7 @@ public final class MainMenu extends ConsoleStageMenu {
                 case MainMenuOptions.SortingData ->
                     throw new UnsupportedOperationException();
                 case MainMenuOptions.ShowData ->
-                    throw new UnsupportedOperationException();
+                    realtyListComponent.print();
                 case MainMenuOptions.Exit ->
                     onExit();
                 default ->
@@ -55,19 +75,6 @@ public final class MainMenu extends ConsoleStageMenu {
         System.out.println(decor);
         System.out.println(title);
         System.out.println(decor);
-    }
-
-    /**
-     * Отобразить меню.
-     */
-    private void printMainMenu() {
-        System.out.println("\nГлавное меню:");
-
-        menuOptionsMap.forEach((key, value) -> {
-            System.out.println("\t" + key.getValue() + ". " + value);
-        });
-
-        System.out.print("Выберите опцию: ");
     }
 
     /**

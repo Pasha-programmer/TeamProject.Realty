@@ -14,5 +14,5 @@ public interface RealtyGetter {
      * @param limit Ограничение количества получения моделей.
      * @return Коллекция моделей информации о недвижимости.
      */
-    public Collection<RealtyDto> GetRealty(Integer limit);
+    public Collection<RealtyDto> getRealty(Integer limit);
 }
