@@ -1,6 +1,7 @@
 package Infrastructure.Services.Realty;
 
 import DataAccess.Data;
+import DataAccess.Realty.RealtyDao;
 import Domain.Contracts.Realty.RealtyGetter;
 import Domain.Models.RealtyDto;
 
@@ -12,7 +13,15 @@ public class RealtyGetterService implements RealtyGetter {
     public Collection<RealtyDto> GetRealty(Integer limit) {
         var data = Data.getRealty();
 
-        return ApplyFilters(data, limit);
+        var filteredRealty = ApplyFilters(data, limit);
+
+        return filteredRealty.stream().map(r -> {
+            var dto = new RealtyDto();
+            dto.address = r.address;
+            dto.cost = r.cost;
+            dto.totalArea = r.totalArea;
+            return  dto;
+        }).toList();
     }
 
     /**
@@ -21,7 +30,7 @@ public class RealtyGetterService implements RealtyGetter {
      * @param limit Ограничение на количество.
      * @return Фильтрованная коллекция недвижимостей.
      */
-    private Collection<RealtyDto> ApplyFilters(Collection<RealtyDto> realty, Integer limit){
+    private Collection<RealtyDao> ApplyFilters(Collection<RealtyDao> realty, Integer limit){
         var realtyStream = realty.stream();
 
         if (limit != null){
