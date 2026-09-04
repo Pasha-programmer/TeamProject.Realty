@@ -1,4 +1,4 @@
-import ConsoleUI.Menu.Contract.ConsoleStageMenu;
+import ConsoleUI.Menu.Contracts.Common.ConsoleStageMenu;
 import ConsoleUI.Menu.MainMenu;
 
 void main() {
