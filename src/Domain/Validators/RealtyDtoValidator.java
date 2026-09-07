@@ -1,6 +1,6 @@
 package Domain.Validators;
 
-import Domain.Contracts.Monads.BusinessError;
+import Domain.Models.BusinessError;
 import Domain.Contracts.Validators.Validator;
 import Domain.Models.RealtyDto;
 
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class RealtyDtoValidator extends Validator<RealtyDto> {
 
     @Override
-    public BusinessError Validate(RealtyDto model) {
+    public BusinessError validate(RealtyDto model) {
         if (model.getCost().compareTo(BigDecimal.ZERO) <= 0){
             return new BusinessError("Стоимость не может быть отрицательной или нулем.");
         }

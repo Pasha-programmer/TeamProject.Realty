@@ -1,6 +1,6 @@
 package Domain.Contracts.Validators;
 
-import Domain.Contracts.Monads.BusinessError;
+import Domain.Models.BusinessError;
 
 /**
  * Базовый класс для валидатора сущности.
@@ -13,5 +13,5 @@ public abstract class Validator<T> {
      * @param model Валидируемая сущность.
      * @return Null - если валидация прошла успешно, иначе модель ошибки бизнеса.
      */
-    public abstract BusinessError Validate(T model);
+    public abstract BusinessError validate(T model);
 }

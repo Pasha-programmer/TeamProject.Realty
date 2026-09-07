@@ -7,13 +7,16 @@ import Domain.Models.RealtyDto;
 
 import java.util.Collection;
 
+/**
+ * Реализация контракта {@link RealtyGetter}.
+ */
 public class RealtyGetterService implements RealtyGetter {
 
     @Override
     public Collection<RealtyDto> getRealty(Integer limit) {
         var data = Data.getRealty();
 
-        var filteredRealty = ApplyFilters(data, limit);
+        var filteredRealty = applyFilters(data, limit);
 
         return filteredRealty.stream().map(r -> RealtyDto.RealtyBuilder.create()
                 .setAddress(r.address)
@@ -29,7 +32,7 @@ public class RealtyGetterService implements RealtyGetter {
      * @param limit Ограничение на количество.
      * @return Фильтрованная коллекция недвижимостей.
      */
-    private Collection<RealtyDao> ApplyFilters(Collection<RealtyDao> realty, Integer limit){
+    private Collection<RealtyDao> applyFilters(Collection<RealtyDao> realty, Integer limit){
         var realtyStream = realty.stream();
 
         if (limit != null){
