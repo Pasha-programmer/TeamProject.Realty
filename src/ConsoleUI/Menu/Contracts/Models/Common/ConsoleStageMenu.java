@@ -1,4 +1,4 @@
-package ConsoleUI.Menu.Contracts.Common;
+package ConsoleUI.Menu.Contracts.Models.Common;
 
 import ConsoleUI.Menu.Components.ConsoleComponent;
 import ConsoleUI.Menu.Contracts.Models.Enums.EnumWithNumber;
@@ -13,17 +13,16 @@ public abstract class ConsoleStageMenu extends ConsoleComponent {
 
     protected static final Scanner SCANNER = new Scanner(System.in);
 
+    private boolean isRun = true;
+
+    protected boolean isRun() { return isRun; }
+
+    protected void stopRun() { isRun = false; }
+
     /**
      * Запустить отображение меню и ее обработку.
      */
     public abstract void run();
-
-    /**
-     * Отобразить ошибку о некорректном выборе опции из меню.
-     */
-    protected void printWrongChoiceError(){
-        System.out.println("Некорректный выбор");
-    }
 
     /**
      * Считать вводимое число пользователя.
@@ -40,6 +39,29 @@ public abstract class ConsoleStageMenu extends ConsoleComponent {
             } catch (IllegalArgumentException e){
                 System.err.println("Не удалось определить выбор");
             }
+        }
+    }
+
+    /**
+     * Обработка результата выполнения стратегии.
+     */
+    protected void processResult(MenuResult result) {
+        // Выводим сообщение, если оно есть
+        if (result.hasMessage()) {
+            System.out.println(result.getMessage());
+            System.out.println(); // пустая строка для разделения
+        }
+
+        // Проверяем, нужно ли продолжать работу
+        if (!result.shouldContinue()) {
+            stopRun();
+            return;
+        }
+
+        // Если есть следующее меню - запускаем его
+        var nextMenu = result.getNextMenu();
+        if (nextMenu != null) {
+            nextMenu.run();
         }
     }
 }

@@ -2,8 +2,11 @@ package ConsoleUI.Menu;
 
 import ConsoleUI.Menu.Components.ConsoleComponent;
 import ConsoleUI.Menu.Components.RealtyListComponent;
-import ConsoleUI.Menu.Contracts.Common.ConsoleStageMenu;
+import ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
+import ConsoleUI.Menu.Contracts.Strategies.ExitStrategy;
+import ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
+import ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
 import Domain.Contracts.Realty.RealtyGetter;
 
 import java.util.Map;
@@ -23,11 +26,10 @@ public final class MainMenu extends ConsoleStageMenu {
             Map.entry(MainMenuOptions.CreateData, "Создать данные о недвижимости"),
             Map.entry(MainMenuOptions.SortingData, "Отсортировать данные"),
             Map.entry(MainMenuOptions.ShowData, "Показать данные"),
+            Map.entry(MainMenuOptions.Search, "Поиск"),
             Map.entry(MainMenuOptions.Exit, "Выход")
         )
     );
-
-    private static boolean IS_RUN = true;
 
     @Override
     public void print() {
@@ -44,23 +46,32 @@ public final class MainMenu extends ConsoleStageMenu {
     public void run() {
         printHeader();
 
-        while(IS_RUN){
+        while(isRun()){
             print();
 
             var choice = readOption(MainMenuOptions.class);
 
-            switch (choice){
+            // Получаем стратегию для выбранной опции
+            var action = switch (choice){
                 case MainMenuOptions.CreateData ->
-                    throw new UnsupportedOperationException();
+                    new NotImplementedStrategy("Создание данных");
                 case MainMenuOptions.SortingData ->
-                    throw new UnsupportedOperationException();
+                    new NotImplementedStrategy("Сортировка данных");
                 case MainMenuOptions.ShowData ->
-                    realtyListComponent.print();
+                    new ShowDataStrategy(realtyListComponent);
+                case MainMenuOptions.Search ->
+                    throw new UnsupportedOperationException();
                 case MainMenuOptions.Exit ->
-                    onExit();
+                    new ExitStrategy();
                 default ->
-                    printWrongChoiceError();
-            }
+                    new NotImplementedStrategy("" + choice.getValue());
+            };
+
+            // Выполняем стратегию и получаем результат
+            var result = action.execute();
+
+            // Обрабатываем результат
+            processResult(result);
         }
 
         SCANNER.close();
@@ -75,13 +86,5 @@ public final class MainMenu extends ConsoleStageMenu {
         System.out.println(decor);
         System.out.println(title);
         System.out.println(decor);
-    }
-
-    /**
-     * Обработчик выхода из приложения.
-     */
-    private void onExit(){
-        IS_RUN = false;
-        System.out.println("Программа завершена.");
     }
 }
