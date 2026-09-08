@@ -8,8 +8,6 @@ import com.example.Domain.Models.RealtyDto;
 import com.example.Domain.Models.RealtyFilterParametersDto;
 
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 /**
