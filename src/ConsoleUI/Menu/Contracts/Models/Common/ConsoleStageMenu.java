@@ -58,6 +58,12 @@ public abstract class ConsoleStageMenu extends ConsoleComponent {
             return;
         }
 
+        var innerComponent = result.getConsoleComponent();
+        if (innerComponent != null) {
+            innerComponent.print();
+            System.out.println(); // пустая строка для разделения
+        }
+
         // Если есть следующее меню - запускаем его
         var nextMenu = result.getNextMenu();
         if (nextMenu != null) {

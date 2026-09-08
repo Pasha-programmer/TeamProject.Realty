@@ -49,7 +49,7 @@ public class MenuResult {
     }
 
     /**
-     * Продолжить работу в текущем меню с сообщением.
+     * Продолжить работу в текущем меню с отображением компоненты.
      */
     public static MenuResult stayInMenu(ConsoleComponent consoleComponent) {
         return new MenuResult(null, true, consoleComponent, null);
@@ -66,7 +66,7 @@ public class MenuResult {
      * Закрыть текущее меню.
      */
     public static MenuResult closeMenu() {
-        return new MenuResult(null, true, null, null);
+        return new MenuResult(null, false, null, null);
     }
 
     public ConsoleStageMenu getNextMenu() {

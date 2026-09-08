@@ -6,6 +6,7 @@ import ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
 import ConsoleUI.Menu.Contracts.Strategies.ExitStrategy;
 import ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
+import ConsoleUI.Menu.Contracts.Strategies.SearchCountStrategy;
 import ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
 import Domain.Contracts.Realty.RealtyGetter;
 
@@ -17,9 +18,11 @@ public final class MainMenu extends ConsoleStageMenu {
 
     public MainMenu(RealtyGetter realtyGetter){
         realtyListComponent = new RealtyListComponent(realtyGetter);
+        this.realtyGetter = realtyGetter;
     }
 
     private final ConsoleComponent realtyListComponent;
+    private final RealtyGetter realtyGetter;
 
     private final static SortedMap<MainMenuOptions, String> menuOptionsMap = new TreeMap<>(
         Map.ofEntries(
@@ -60,7 +63,7 @@ public final class MainMenu extends ConsoleStageMenu {
                 case MainMenuOptions.ShowData ->
                     new ShowDataStrategy(realtyListComponent);
                 case MainMenuOptions.Search ->
-                    throw new UnsupportedOperationException();
+                    new SearchCountStrategy(realtyGetter);
                 case MainMenuOptions.Exit ->
                     new ExitStrategy();
                 default ->

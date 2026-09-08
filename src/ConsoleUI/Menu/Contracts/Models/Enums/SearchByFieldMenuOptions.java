@@ -7,7 +7,7 @@ public enum SearchByFieldMenuOptions implements EnumWithNumber {
     Address(1),
     Cost(2),
     TotalArea(3),
-    Cansel(4);
+    Cancel(4);
 
     private final int value;
 
