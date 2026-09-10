@@ -3,7 +3,6 @@ package com.example.ConsoleUI.Menu.Components;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 /**
  * Компонент ввода целого числа от пользователя.
@@ -11,13 +10,6 @@ import java.text.DecimalFormat;
 public class InputMoneyComponent extends InputComponent<BigDecimal> {
 
     private static final String MONEY_MASK = "###,###.##";
-
-    private static final DecimalFormat FORMATTER = new DecimalFormat(MONEY_MASK);
-
-    static {
-        FORMATTER.setGroupingUsed(true);
-        FORMATTER.setGroupingSize(3);
-    }
 
     @Override
     public void print() {
@@ -64,15 +56,5 @@ public class InputMoneyComponent extends InputComponent<BigDecimal> {
         } catch (NumberFormatException e) {
             return null;
         }
-    }
-
-    /**
-     * Метод для форматирования денежного значения с маской
-     */
-    public static String formatMoney(BigDecimal value) {
-        if (value == null) {
-            return "";
-        }
-        return FORMATTER.format(value);
     }
 }
