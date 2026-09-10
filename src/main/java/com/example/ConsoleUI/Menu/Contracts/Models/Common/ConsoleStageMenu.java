@@ -1,6 +1,5 @@
 package com.example.ConsoleUI.Menu.Contracts.Models.Common;
 
-import com.example.ConsoleUI.Menu.Components.ConsoleComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.EnumWithNumber;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
 
@@ -11,7 +10,11 @@ import java.util.Scanner;
  */
 public abstract class ConsoleStageMenu extends ConsoleComponent {
 
-    protected static final Scanner SCANNER = new Scanner(System.in);
+    protected ConsoleStageMenu (Scanner scanner){
+        this.scanner = scanner;
+    }
+
+    protected final Scanner scanner;
 
     private boolean isRun = true;
 
@@ -31,7 +34,7 @@ public abstract class ConsoleStageMenu extends ConsoleComponent {
     protected <T extends Enum<T> & EnumWithNumber> T readOption(Class<T> menuOptionEnum) {
         while (true) {
             try {
-                var input = SCANNER.nextLine().trim();
+                var input = scanner.nextLine().trim();
                 var value = Integer.parseInt(input);
                 return EnumWithNumber.fromNumber(menuOptionEnum, value);
             } catch (NumberFormatException e) {

@@ -3,11 +3,16 @@ package com.example.ConsoleUI.Menu.Components;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 
 import java.math.BigDecimal;
+import java.util.Scanner;
 
 /**
  * Компонент ввода целого числа от пользователя.
  */
 public class InputMoneyComponent extends InputComponent<BigDecimal> {
+
+    public InputMoneyComponent(Scanner scanner){
+        super(scanner);
+    }
 
     private static final String MONEY_MASK = "###,###.##";
 
@@ -32,7 +37,7 @@ public class InputMoneyComponent extends InputComponent<BigDecimal> {
     }
 
     protected BigDecimal readBigDecimal() {
-        var input = SCANNER.nextLine().trim();
+        var input = scanner.nextLine().trim();
 
         // Проверка на пустой ввод
         if (input.isEmpty()) {

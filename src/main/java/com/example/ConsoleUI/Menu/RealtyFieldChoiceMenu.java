@@ -12,6 +12,7 @@ import com.example.Domain.Models.RealtyFilterParametersDto;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -25,11 +26,12 @@ public class RealtyFieldChoiceMenu extends ConsoleStageMenu {
     private final InputComponent<BigDecimal> inputMoneyComponent;
     private final InputComponent<Double> inputDoubleComponent;
 
-    public RealtyFieldChoiceMenu(RealtyGetter realtyGetter){
+    public RealtyFieldChoiceMenu(Scanner scanner, RealtyGetter realtyGetter){
+        super(scanner);
         this.realtyListCountComponent = new RealtyListCountComponent(realtyGetter, null);
-        this.inputStringComponent = new InputStringComponent();
-        this.inputMoneyComponent = new InputMoneyComponent();
-        this.inputDoubleComponent = new InputDoubleComponent();
+        this.inputStringComponent = new InputStringComponent(scanner);
+        this.inputMoneyComponent = new InputMoneyComponent(scanner);
+        this.inputDoubleComponent = new InputDoubleComponent(scanner);
     }
 
     private final static SortedMap<SearchByFieldMenuOptions, String> menuOptionsMap = new TreeMap<>(

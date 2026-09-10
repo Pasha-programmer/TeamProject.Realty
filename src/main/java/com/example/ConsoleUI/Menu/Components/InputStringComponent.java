@@ -2,10 +2,16 @@ package com.example.ConsoleUI.Menu.Components;
 
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 
+import java.util.Scanner;
+
 /**
  * Компонент ввода текстовой информации от пользователя.
  */
 public class InputStringComponent extends InputComponent<String> {
+
+    public InputStringComponent(Scanner scanner){
+        super(scanner);
+    }
 
     @Override
     public void print() {
@@ -20,6 +26,6 @@ public class InputStringComponent extends InputComponent<String> {
     }
 
     protected String readString(){
-        return SCANNER.nextLine().trim();
+        return scanner.nextLine().trim();
     }
 }

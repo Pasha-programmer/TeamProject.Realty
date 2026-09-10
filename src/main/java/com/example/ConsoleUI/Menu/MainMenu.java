@@ -1,6 +1,6 @@
 package com.example.ConsoleUI.Menu;
 
-import com.example.ConsoleUI.Menu.Components.ConsoleComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
 import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
@@ -11,12 +11,14 @@ import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 
 import java.util.Map;
+import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 public final class MainMenu extends ConsoleStageMenu {
 
-    public MainMenu(RealtyGetter realtyGetter){
+    public MainMenu(Scanner scanner, RealtyGetter realtyGetter){
+        super(scanner);
         realtyListComponent = new RealtyListComponent(realtyGetter);
         this.realtyGetter = realtyGetter;
     }
@@ -63,7 +65,7 @@ public final class MainMenu extends ConsoleStageMenu {
                 case MainMenuOptions.ShowData ->
                     new ShowDataStrategy(realtyListComponent);
                 case MainMenuOptions.Search ->
-                    new SearchCountStrategy(realtyGetter);
+                    new SearchCountStrategy(scanner, realtyGetter);
                 case MainMenuOptions.Exit ->
                     new ExitStrategy();
                 default ->
@@ -76,8 +78,6 @@ public final class MainMenu extends ConsoleStageMenu {
             // Обрабатываем результат
             processResult(result);
         }
-
-        SCANNER.close();
     }
 
     /**

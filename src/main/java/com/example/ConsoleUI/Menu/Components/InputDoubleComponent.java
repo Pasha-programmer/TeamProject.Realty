@@ -2,15 +2,16 @@ package com.example.ConsoleUI.Menu.Components;
 
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.ParsePosition;
-import java.util.Locale;
+import java.util.Scanner;
 
 /**
  * Компонент ввода числа с плавающей точкой от пользователя.
  */
 public class InputDoubleComponent extends InputComponent<Double> {
+
+    public InputDoubleComponent(Scanner scanner){
+        super(scanner);
+    }
 
     private static final String NUMBER_MASK = "#,##0.0#";
 
@@ -35,7 +36,7 @@ public class InputDoubleComponent extends InputComponent<Double> {
     }
 
     protected Double readDouble() {
-        String input = SCANNER.nextLine().trim();
+        String input = scanner.nextLine().trim();
 
         // Проверка на пустой ввод
         if (input.isEmpty()) {

@@ -1,5 +1,6 @@
 package com.example.ConsoleUI.Menu.Components;
 
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Models.RealtyFilterParametersDto;
 

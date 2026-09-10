@@ -4,12 +4,16 @@ import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.MainMenu;
 import com.example.Infrastructure.Services.Realty.RealtyGetterService;
 
-public class Main {
-    public static void main(String[] args) {
+import java.util.Scanner;
 
-        ConsoleStageMenu mainMenu = new MainMenu(
-                new RealtyGetterService()
-        );
-        mainMenu.run();
+public class Main {
+    static void main(String[] args) {
+        try(var scanner = new Scanner(System.in)){
+            ConsoleStageMenu mainMenu = new MainMenu(
+                    scanner,
+                    new RealtyGetterService()
+            );
+            mainMenu.run();
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.ConsoleUI.Menu.Components;
+package com.example.ConsoleUI.Menu.Contracts.Models.Common;
 
 /**
  * Базовое представление консольного компонента.

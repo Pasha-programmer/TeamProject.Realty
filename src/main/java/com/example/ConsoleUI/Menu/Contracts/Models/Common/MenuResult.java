@@ -1,7 +1,5 @@
 package com.example.ConsoleUI.Menu.Contracts.Models.Common;
 
-import com.example.ConsoleUI.Menu.Components.ConsoleComponent;
-
 /**
  * Результат выполнения стратегии меню.
  * Инкапсулирует информацию о том, что делать дальше.

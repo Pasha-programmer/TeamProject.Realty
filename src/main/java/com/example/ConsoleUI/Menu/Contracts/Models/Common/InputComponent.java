@@ -1,7 +1,5 @@
 package com.example.ConsoleUI.Menu.Contracts.Models.Common;
 
-import com.example.ConsoleUI.Menu.Components.ConsoleComponent;
-
 import java.util.Scanner;
 
 /**
@@ -9,7 +7,11 @@ import java.util.Scanner;
  */
 public abstract class InputComponent<T> extends ConsoleComponent {
 
-    protected static final Scanner SCANNER = new Scanner(System.in);
+    protected InputComponent(Scanner scanner){
+        this.scanner = scanner;
+    }
+
+    protected final Scanner scanner;
 
     /**
      * Считать ввод
