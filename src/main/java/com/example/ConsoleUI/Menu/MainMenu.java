@@ -1,19 +1,20 @@
 package com.example.ConsoleUI.Menu;
 
-import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.DataInputStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.ExitStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.SearchCountStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
-
-import java.util.Map;
-import java.util.Scanner;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 public final class MainMenu extends ConsoleStageMenu {
 
@@ -59,7 +60,7 @@ public final class MainMenu extends ConsoleStageMenu {
             // Получаем стратегию для выбранной опции
             var action = switch (choice){
                 case MainMenuOptions.CreateData ->
-                    new NotImplementedStrategy("Создание данных");
+                    new DataInputStrategy(scanner, realtyGetter);
                 case MainMenuOptions.SortingData ->
                     new NotImplementedStrategy("Сортировка данных");
                 case MainMenuOptions.ShowData ->
