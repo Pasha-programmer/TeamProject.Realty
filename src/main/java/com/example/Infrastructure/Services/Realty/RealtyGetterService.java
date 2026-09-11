@@ -43,7 +43,7 @@ public class RealtyGetterService implements RealtyGetter {
                 .map(this::mapRealtyDaoToDto)
                 .toList();
 
-        return (int)ParallelStream.getCountElement(realtyDtos, targetRealty, new RealtyComparator());
+        return (int)ParallelStream.getCountElement(realtyDtos, targetRealty);
     }
 
     /**
