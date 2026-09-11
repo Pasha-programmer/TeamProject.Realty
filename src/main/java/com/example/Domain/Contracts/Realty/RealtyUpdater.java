@@ -15,5 +15,5 @@ public interface RealtyUpdater {
      * @param realtyDtos модели информации о недвижимости.
      * @return true - если добавление успешно, иначе false.
      */
-    public Result<Boolean> addRealty(Collection<RealtyDto> realtyDtos);
+    Result<Boolean> addRealty(Collection<RealtyDto> realtyDtos);
 }

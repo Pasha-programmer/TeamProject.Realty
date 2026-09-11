@@ -1,33 +1,40 @@
 package com.example.ConsoleUI.Menu;
 
-import com.example.ConsoleUI.Menu.Components.ConsoleComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
 import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
-import com.example.ConsoleUI.Menu.Contracts.Common.ConsoleStageMenu;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.ExitStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.SearchCountStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 
 import java.util.Map;
+import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 public final class MainMenu extends ConsoleStageMenu {
 
-    public MainMenu(RealtyGetter realtyGetter){
+    public MainMenu(Scanner scanner, RealtyGetter realtyGetter){
+        super(scanner);
         realtyListComponent = new RealtyListComponent(realtyGetter);
+        this.realtyGetter = realtyGetter;
     }
 
     private final ConsoleComponent realtyListComponent;
+    private final RealtyGetter realtyGetter;
 
     private final static SortedMap<MainMenuOptions, String> menuOptionsMap = new TreeMap<>(
         Map.ofEntries(
             Map.entry(MainMenuOptions.CreateData, "Создать данные о недвижимости"),
             Map.entry(MainMenuOptions.SortingData, "Отсортировать данные"),
             Map.entry(MainMenuOptions.ShowData, "Показать данные"),
+            Map.entry(MainMenuOptions.Search, "Поиск"),
             Map.entry(MainMenuOptions.Exit, "Выход")
         )
     );
-
-    private static boolean IS_RUN = true;
 
     @Override
     public void print() {
@@ -44,26 +51,33 @@ public final class MainMenu extends ConsoleStageMenu {
     public void run() {
         printHeader();
 
-        while(IS_RUN){
+        while(isRun()){
             print();
 
             var choice = readOption(MainMenuOptions.class);
 
-            switch (choice){
+            // Получаем стратегию для выбранной опции
+            var action = switch (choice){
                 case MainMenuOptions.CreateData ->
-                    throw new UnsupportedOperationException();
+                    new NotImplementedStrategy("Создание данных");
                 case MainMenuOptions.SortingData ->
-                    throw new UnsupportedOperationException();
+                    new NotImplementedStrategy("Сортировка данных");
                 case MainMenuOptions.ShowData ->
-                    realtyListComponent.print();
+                    new ShowDataStrategy(realtyListComponent);
+                case MainMenuOptions.Search ->
+                    new SearchCountStrategy(scanner, realtyGetter);
                 case MainMenuOptions.Exit ->
-                    onExit();
+                    new ExitStrategy();
                 default ->
-                    printWrongChoiceError();
-            }
-        }
+                    new NotImplementedStrategy("" + choice.getValue());
+            };
 
-        SCANNER.close();
+            // Выполняем стратегию и получаем результат
+            var result = action.execute();
+
+            // Обрабатываем результат
+            processResult(result);
+        }
     }
 
     /**
@@ -75,13 +89,5 @@ public final class MainMenu extends ConsoleStageMenu {
         System.out.println(decor);
         System.out.println(title);
         System.out.println(decor);
-    }
-
-    /**
-     * Обработчик выхода из приложения.
-     */
-    private void onExit(){
-        IS_RUN = false;
-        System.out.println("Программа завершена.");
     }
 }
