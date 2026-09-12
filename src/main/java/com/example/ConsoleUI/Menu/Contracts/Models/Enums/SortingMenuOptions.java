@@ -1,5 +1,8 @@
 package com.example.ConsoleUI.Menu.Contracts.Models.Enums;
 
+/**
+ * Варианты сортировки недвижимости.
+ */
 public enum SortingMenuOptions implements EnumWithNumber {
     ByAddress(1),
     ByArea(2),

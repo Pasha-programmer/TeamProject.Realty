@@ -1,27 +1,28 @@
 package com.example.ConsoleUI.Menu;
 
-import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleDataComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.SortingMenuOptions;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Contracts.Realty.RealtySorter;
+import com.example.Domain.Models.RealtyDto;
 import com.example.Infrastructure.Services.Realty.Sorting.AddressSortingStrategy;
 import com.example.Infrastructure.Services.Realty.Sorting.AllFieldsSortingStrategy;
 import com.example.Infrastructure.Services.Realty.Sorting.AreaSortingStrategy;
 import com.example.Infrastructure.Services.Realty.Sorting.CostSortingStrategy;
 
-import java.util.Map;
-import java.util.Scanner;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
+/**
+ * Меню выбора способа сортировки недвижимости.
+ */
 public class SortingMenu extends ConsoleStageMenu {
 
-    protected SortingMenu(
+    public SortingMenu(
             Scanner scanner,
             RealtyGetter realtyGetter,
             RealtySorter realtySorter,
-            RealtyListComponent realtyListComponent
+            ConsoleDataComponent<Collection<RealtyDto>> realtyListComponent
     ) {
         super(scanner);
         this.realtyGetter = realtyGetter;
@@ -31,7 +32,7 @@ public class SortingMenu extends ConsoleStageMenu {
 
     private final RealtyGetter realtyGetter;
     private final RealtySorter realtySorter;
-    private final RealtyListComponent realtyListComponent;
+    private final ConsoleDataComponent<Collection<RealtyDto>> realtyListComponent;
 
     private final static SortedMap<SortingMenuOptions, String> menuOptionsMap = new TreeMap<>(
             Map.ofEntries(

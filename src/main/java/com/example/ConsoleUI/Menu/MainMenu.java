@@ -1,17 +1,15 @@
 package com.example.ConsoleUI.Menu;
 
-import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
 import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleDataComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.*;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Contracts.Realty.RealtySorter;
+import com.example.Domain.Models.RealtyDto;
 
-import java.util.Map;
-import java.util.Scanner;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public final class MainMenu extends ConsoleStageMenu {
 
@@ -21,13 +19,12 @@ public final class MainMenu extends ConsoleStageMenu {
             RealtySorter realtySorter
     ) {
         super(scanner);
-        var realtyList = new RealtyListComponent(realtyGetter);
-        realtyListComponent = realtyList;
+        realtyListComponent = new RealtyListComponent(realtyGetter);
         this.realtyGetter = realtyGetter;
-        sortingMenu = new SortingMenu(scanner, realtyGetter, realtySorter, realtyList);
+        sortingMenu = new SortingMenu(scanner, realtyGetter, realtySorter, realtyListComponent);
     }
 
-    private final ConsoleComponent realtyListComponent;
+    private final ConsoleDataComponent<Collection<RealtyDto>> realtyListComponent;
     private final RealtyGetter realtyGetter;
     private final ConsoleStageMenu sortingMenu;
 

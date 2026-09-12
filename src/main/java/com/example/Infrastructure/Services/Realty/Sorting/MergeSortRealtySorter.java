@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Сервис сортировки недвижимости с использованием алгоритма Merge Sort.
+ */
 public class MergeSortRealtySorter implements RealtySorter {
     @Override
     public Collection<RealtyDto> sort(
@@ -31,6 +34,14 @@ public class MergeSortRealtySorter implements RealtySorter {
         return merge(sortedLeft, sortedRight, comparator);
     }
 
+    /**
+     * Объединить два отсортированных списка недвижимости.
+     *
+     * @param left Левый отсортированный список.
+     * @param right Правый отсортированный список.
+     * @param comparator Компаратор, определяющий порядок сортировки.
+     * @return Объединённый отсортированный список.
+     */
     private List<RealtyDto> merge(
             List<RealtyDto> left,
             List<RealtyDto> right,
