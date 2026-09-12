@@ -1,6 +1,7 @@
 package com.example.Domain.Models;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * Модель информации о недвижимости
@@ -27,6 +28,27 @@ public class RealtyDto {
     private double totalArea;
 
     public double getTotalArea() { return totalArea; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        RealtyDto realtyDto2 = (RealtyDto) obj;
+        return totalArea == realtyDto2.totalArea
+                && Objects.equals(address, realtyDto2.address)
+                && Objects.equals(cost, realtyDto2.cost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address, cost, totalArea);
+    }
 
     /**
      * Строитель модели информации о недвижимости.

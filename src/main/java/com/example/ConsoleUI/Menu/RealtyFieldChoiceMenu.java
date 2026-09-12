@@ -1,0 +1,104 @@
+package com.example.ConsoleUI.Menu;
+
+import com.example.ConsoleUI.Menu.Components.*;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Enums.SearchByFieldMenuOptions;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
+import com.example.Domain.Contracts.Realty.RealtyGetter;
+import com.example.Domain.Models.RealtyFilterParametersDto;
+
+import java.math.BigDecimal;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+/**
+ * Этап меню выбора поля для фильтрации.
+ */
+public class RealtyFieldChoiceMenu extends ConsoleStageMenu {
+
+    private final RealtyListCountComponent realtyListCountComponent;
+    private final InputComponent<String> inputStringComponent;
+    private final InputComponent<BigDecimal> inputMoneyComponent;
+    private final InputComponent<Double> inputDoubleComponent;
+
+    public RealtyFieldChoiceMenu(Scanner scanner, RealtyGetter realtyGetter){
+        super(scanner);
+        this.realtyListCountComponent = new RealtyListCountComponent(realtyGetter, null);
+        this.inputStringComponent = new InputStringComponent(scanner);
+        this.inputMoneyComponent = new InputMoneyComponent(scanner);
+        this.inputDoubleComponent = new InputDoubleComponent(scanner);
+    }
+
+    private final static SortedMap<SearchByFieldMenuOptions, String> menuOptionsMap = new TreeMap<>(
+        Map.ofEntries(
+            Map.entry(SearchByFieldMenuOptions.Address, "По адресу"),
+            Map.entry(SearchByFieldMenuOptions.Cost, "По стоимости"),
+            Map.entry(SearchByFieldMenuOptions.TotalArea, "По общей площади"),
+            Map.entry(SearchByFieldMenuOptions.Cancel, "Отмена")
+        )
+    );
+
+    @Override
+    public void run() {
+        while(isRun()){
+            print();
+
+            var choice = readOption(SearchByFieldMenuOptions.class);
+
+            var realtyFilterParametersBuilder = RealtyFilterParametersDto.RealtyFilterParametersBuilder.create();
+
+            var action = switch (choice){
+                case SearchByFieldMenuOptions.Address -> {
+                    var address = inputStringComponent.read();
+                    var filters = realtyFilterParametersBuilder
+                        .setAddress(address)
+                        .build();
+                    realtyListCountComponent.setFilterParameters(filters);
+                    yield new ShowDataStrategy(realtyListCountComponent);
+                }
+                case SearchByFieldMenuOptions.Cost -> {
+                    var cost = inputMoneyComponent.read();
+                    var filters = realtyFilterParametersBuilder
+                            .setFromCost(cost)
+                            .setToCost(cost)
+                            .build();
+                    realtyListCountComponent.setFilterParameters(filters);
+                    yield new ShowDataStrategy(realtyListCountComponent);
+                }
+                case SearchByFieldMenuOptions.TotalArea -> {
+                    var totalArea = inputDoubleComponent.read();
+                    var filters = realtyFilterParametersBuilder
+                            .setFromTotalArea(totalArea)
+                            .setToTotalArea(totalArea)
+                            .build();
+                    realtyListCountComponent.setFilterParameters(filters);
+                    yield new ShowDataStrategy(realtyListCountComponent);
+                }
+                case SearchByFieldMenuOptions.Cancel ->
+                    new CloseMenuStrategy();
+                default ->
+                    new NotImplementedStrategy("" + choice.getValue());
+            };
+
+            // Выполняем стратегию и получаем результат
+            var result = action.execute();
+
+            // Обрабатываем результат
+            processResult(result);
+        }
+    }
+
+    @Override
+    public void print() {
+        menuOptionsMap.forEach((key, value) -> {
+            System.out.println("\t" + key.getValue() + ". " + value);
+        });
+
+        System.out.print("Выберите поле, по которому требуется поиск: ");
+    }
+}
