@@ -3,7 +3,6 @@ package com.example.Infrastructure.Services.Realty;
 import com.example.DataAccess.Data;
 import com.example.DataAccess.Realty.RealtyDao;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
-import com.example.Domain.Models.Comparators.RealtyComparator;
 import com.example.Domain.Models.RealtyDto;
 import com.example.Domain.Models.RealtyFilterParametersDto;
 

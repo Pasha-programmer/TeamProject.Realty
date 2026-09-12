@@ -1,13 +1,15 @@
 package com.example.ConsoleUI.Menu.Components;
 
-import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleDataComponent;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Models.RealtyDto;
+
+import java.util.Collection;
 
 /**
  * Компонент отображения списка недвижимости.
  */
-public class RealtyListComponent extends ConsoleComponent {
+public class RealtyListComponent extends ConsoleDataComponent<Collection<RealtyDto>> {
 
     public RealtyListComponent(RealtyGetter realtyGetter){
         this.realtyGetter = realtyGetter;
@@ -19,6 +21,15 @@ public class RealtyListComponent extends ConsoleComponent {
     public void print(){
         var data = realtyGetter.getRealty(null);
 
+        printData(data);
+    }
+
+    @Override
+    public void print(Collection<RealtyDto> data) {
+        printData(data);
+    }
+
+    private void printData(Collection<RealtyDto> data) {
         if (data == null){
             System.err.println("Не удалось получить данные");
             return;
