@@ -20,10 +20,10 @@ public class MergeSortRealtySorter implements RealtySorter {
             return list;
         }
 
-        int midle = list.size() / 2;
+        int middle = list.size() / 2;
 
-        List<RealtyDto> left = new ArrayList<>(list.subList(0, midle));
-        List<RealtyDto> right = new ArrayList<>(list.subList(midle, list.size()));
+        List<RealtyDto> left = new ArrayList<>(list.subList(0, middle));
+        List<RealtyDto> right = new ArrayList<>(list.subList(middle, list.size()));
 
         List<RealtyDto> sortedLeft = new ArrayList<>(sort(left, comparator));
         List<RealtyDto> sortedRight = new ArrayList<>(sort(right, comparator));

@@ -4,11 +4,9 @@ import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
 import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.ExitStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.SearchCountStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.*;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
+import com.example.Domain.Contracts.Realty.RealtySorter;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -17,14 +15,21 @@ import java.util.TreeMap;
 
 public final class MainMenu extends ConsoleStageMenu {
 
-    public MainMenu(Scanner scanner, RealtyGetter realtyGetter){
+    public MainMenu(
+            Scanner scanner,
+            RealtyGetter realtyGetter,
+            RealtySorter realtySorter
+    ) {
         super(scanner);
-        realtyListComponent = new RealtyListComponent(realtyGetter);
+        var realtyList = new RealtyListComponent(realtyGetter);
+        realtyListComponent = realtyList;
         this.realtyGetter = realtyGetter;
+        sortingMenu = new SortingMenu(scanner, realtyGetter, realtySorter, realtyList);
     }
 
     private final ConsoleComponent realtyListComponent;
     private final RealtyGetter realtyGetter;
+    private final ConsoleStageMenu sortingMenu;
 
     private final static SortedMap<MainMenuOptions, String> menuOptionsMap = new TreeMap<>(
         Map.ofEntries(
@@ -61,7 +66,7 @@ public final class MainMenu extends ConsoleStageMenu {
                 case MainMenuOptions.CreateData ->
                     new NotImplementedStrategy("Создание данных");
                 case MainMenuOptions.SortingData ->
-                    new NotImplementedStrategy("Сортировка данных");
+                    new SortingDataStrategy(sortingMenu);
                 case MainMenuOptions.ShowData ->
                     new ShowDataStrategy(realtyListComponent);
                 case MainMenuOptions.Search ->

@@ -4,6 +4,8 @@ import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Models.RealtyDto;
 
+import java.util.Collection;
+
 /**
  * Компонент отображения списка недвижимости.
  */
@@ -19,6 +21,14 @@ public class RealtyListComponent extends ConsoleComponent {
     public void print(){
         var data = realtyGetter.getRealty(null);
 
+        printData(data);
+    }
+
+    public void print(Collection<RealtyDto> data) {
+        printData(data);
+    }
+
+    private void printData(Collection<RealtyDto> data) {
         if (data == null){
             System.err.println("Не удалось получить данные");
             return;
