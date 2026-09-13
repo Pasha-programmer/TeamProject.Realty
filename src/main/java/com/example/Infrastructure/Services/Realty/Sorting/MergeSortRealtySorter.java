@@ -18,63 +18,92 @@ public class MergeSortRealtySorter implements RealtySorter {
             Comparator<RealtyDto> comparator
     ) {
         List<RealtyDto> list = new ArrayList<>(realty);
+        List<RealtyDto> buffer = new ArrayList<>(list);
 
-        if (list.size() <= 1) {
-            return list;
-        }
+        mergeSort(list, buffer, 0, list.size(), comparator);
 
-        int middle = list.size() / 2;
-
-        List<RealtyDto> left = new ArrayList<>(list.subList(0, middle));
-        List<RealtyDto> right = new ArrayList<>(list.subList(middle, list.size()));
-
-        List<RealtyDto> sortedLeft = new ArrayList<>(sort(left, comparator));
-        List<RealtyDto> sortedRight = new ArrayList<>(sort(right, comparator));
-
-        return merge(sortedLeft, sortedRight, comparator);
+        return list;
     }
 
     /**
-     * Объединить два отсортированных списка недвижимости.
+     * Отсортировать диапазон списка недвижимости методом Merge Sort.
      *
-     * @param left Левый отсортированный список.
-     * @param right Правый отсортированный список.
+     * @param list Список недвижимости.
+     * @param buffer Временный список для объединения данных.
+     * @param from Начало сортируемого диапазона.
+     * @param to Конец сортируемого диапазона.
      * @param comparator Компаратор, определяющий порядок сортировки.
-     * @return Объединённый отсортированный список.
      */
-    private List<RealtyDto> merge(
-            List<RealtyDto> left,
-            List<RealtyDto> right,
+    private void mergeSort(
+            List<RealtyDto> list,
+            List<RealtyDto> buffer,
+            int from,
+            int to,
             Comparator<RealtyDto> comparator
     ) {
-        List<RealtyDto> result = new ArrayList<>();
+        if (to - from <= 1) {
+            return;
+        }
 
-        int leftIndex = 0;
-        int rightIndex = 0;
+        int middle = (from + to) / 2;
 
-        while (leftIndex < left.size() && rightIndex < right.size()) {
-            RealtyDto leftElement = left.get(leftIndex);
-            RealtyDto rightElement = right.get(rightIndex);
+        mergeSort(list, buffer, from, middle, comparator);
+        mergeSort(list, buffer, middle, to, comparator);
+
+        merge(list, buffer, from, middle, to, comparator);
+    }
+
+    /**
+     * Объединить два отсортированных диапазона недвижимости.
+     *
+     * @param list Список недвижимости.
+     * @param buffer Временный список для объединения данных.
+     * @param from Начало сортируемого диапазона.
+     * @param middle Граница между левым и правым диапазонами.
+     * @param to Конец сортируемого диапазона.
+     * @param comparator Компаратор, определяющий порядок сортировки.
+     */
+    private void merge(
+            List<RealtyDto> list,
+            List<RealtyDto> buffer,
+            int from,
+            int middle,
+            int to,
+            Comparator<RealtyDto> comparator
+    ) {
+        int leftIndex = from;
+        int rightIndex = middle;
+        int bufferIndex = from;
+
+        while (leftIndex < middle && rightIndex < to) {
+            RealtyDto leftElement = list.get(leftIndex);
+            RealtyDto rightElement = list.get(rightIndex);
 
             if (comparator.compare(leftElement, rightElement) <= 0) {
-                result.add(leftElement);
+                buffer.set(bufferIndex, leftElement);
                 leftIndex++;
             } else {
-                result.add(rightElement);
+                buffer.set(bufferIndex, rightElement);
                 rightIndex++;
             }
+
+            bufferIndex++;
         }
 
-        while (leftIndex < left.size()) {
-            result.add(left.get(leftIndex));
+        while (leftIndex < middle) {
+            buffer.set(bufferIndex, list.get(leftIndex));
             leftIndex++;
+            bufferIndex++;
         }
 
-        while (rightIndex < right.size()) {
-            result.add(right.get(rightIndex));
+        while (rightIndex < to) {
+            buffer.set(bufferIndex, list.get(rightIndex));
             rightIndex++;
+            bufferIndex++;
         }
 
-        return result;
+        for (int i = from; i < to; i++) {
+            list.set(i, buffer.get(i));
+        }
     }
 }
