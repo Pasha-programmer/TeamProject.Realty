@@ -4,10 +4,7 @@ import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleComponent;
 import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.ExitStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.SearchCountStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.*;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 
 import java.util.Map;
@@ -32,6 +29,7 @@ public final class MainMenu extends ConsoleStageMenu {
             Map.entry(MainMenuOptions.SortingData, "Отсортировать данные"),
             Map.entry(MainMenuOptions.ShowData, "Показать данные"),
             Map.entry(MainMenuOptions.Search, "Поиск"),
+            Map.entry(MainMenuOptions.ImportData, "Загрузить данные из файла"),
             Map.entry(MainMenuOptions.Exit, "Выход")
         )
     );
@@ -66,6 +64,8 @@ public final class MainMenu extends ConsoleStageMenu {
                     new ShowDataStrategy(realtyListComponent);
                 case MainMenuOptions.Search ->
                     new SearchCountStrategy(scanner, realtyGetter);
+                case MainMenuOptions.ImportData ->
+                    new RealtyImportFromJsonStrategy(scanner);
                 case MainMenuOptions.Exit ->
                     new ExitStrategy();
                 default ->
