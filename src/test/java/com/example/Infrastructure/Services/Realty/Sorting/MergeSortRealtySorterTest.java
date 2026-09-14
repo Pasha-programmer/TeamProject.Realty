@@ -222,12 +222,12 @@ class MergeSortRealtySorterTest {
     }
 
     @Test
-    void sort_shouldBreakOnNullInput() {
+    void sort_shouldThrowsOnNullInput() {
         assertThrows(NullPointerException.class, () -> sorter.sort(null, byCost));
     }
 
     @Test
-    void sort_shouldBreakOnNullComparator() {
+    void sort_shouldThrowsOnNullComparator() {
         assertThrows(NullPointerException.class, () -> sorter.sort(new ArrayList<>(), null));
     }
 }
