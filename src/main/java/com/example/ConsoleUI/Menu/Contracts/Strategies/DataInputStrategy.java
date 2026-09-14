@@ -9,7 +9,7 @@ import com.example.ConsoleUI.Menu.RealtyDataInputMenu;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
 
 /**
- * Стратегия ввода данных.
+ * Стратегия создания данных.
  */
 public class DataInputStrategy implements MenuActionStrategy {
 

@@ -42,12 +42,14 @@ public class RealtyUpdaterService implements RealtyUpdater {
     @Override
     public Result<Boolean> addRealty(RealtyDto realtyDto) {
         var validationResult = realtyDtoValidator.validate(realtyDto); 
-        if(validationResult != null){
+        if (validationResult != null){
             return new Result<Boolean>(false, validationResult);
         }
 
-        return new Result<Boolean>(Data.addRealty(new RealtyDao(realtyDto.getAddress(), 
+        var inputResult = Data.addRealty(new RealtyDao(realtyDto.getAddress(), 
                                                                 realtyDto.getCost(), 
-                                                                realtyDto.getTotalArea())));
+                                                                realtyDto.getTotalArea()));
+        return inputResult ? new Result<Boolean>(inputResult) 
+                           : new Result<Boolean>(inputResult, new BusinessError("Произошла ошибка при сохранении данных"));
     }
 }

@@ -12,6 +12,12 @@ import com.example.ConsoleUI.Menu.Contracts.Strategies.InputStrategies.UserInput
 import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
 
+/**
+ * Этап меню выбора ввода данных. Возможен: 
+ * Ручной ввод
+ * Импорт из Json-файла
+ * Генерация случайных данных
+ */
 public class RealtyDataInputMenu extends ConsoleStageMenu{
 
     private final RealtyUpdater realtySetter;
