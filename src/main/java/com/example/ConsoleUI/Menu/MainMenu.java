@@ -25,8 +25,9 @@ public final class MainMenu extends ConsoleStageMenu {
 
     public MainMenu(
             Scanner scanner,
-            RealtyGetter realtyGetter, RealtyUpdater realtyUpdater,
-            RealtySorter realtySorter
+            RealtyGetter realtyGetter,
+            RealtySorter realtySorter,
+            RealtyUpdater realtyUpdater
     ) {
         super(scanner);
         realtyListComponent = new RealtyListComponent(realtyGetter);
