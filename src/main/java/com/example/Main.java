@@ -10,7 +10,7 @@ import com.example.Infrastructure.Services.Realty.RealtyUpdaterService;
 import com.example.Infrastructure.Services.Realty.Sorting.MergeSortRealtySorter;
 
 public class Main {
-    public static void main(String[] args) {
+    static void main(String[] args) {
         try(var scanner = new Scanner(System.in)){
             ConsoleStageMenu mainMenu = new MainMenu(
                     scanner,
