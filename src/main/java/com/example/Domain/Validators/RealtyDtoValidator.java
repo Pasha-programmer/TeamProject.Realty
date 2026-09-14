@@ -13,15 +13,15 @@ public class RealtyDtoValidator extends Validator<RealtyDto> {
 
     @Override
     public BusinessError validate(RealtyDto model) {
-        if (model.getCost().compareTo(BigDecimal.ZERO) <= 0){
-            return new BusinessError("Стоимость не может быть отрицательной или нулем.");
+        if (model.getCost() == null || model.getCost().compareTo(BigDecimal.ZERO) <= 0){
+            return new BusinessError("Стоимость должна быть заполнена и не может быть отрицательной или нулем.");
         }
 
         if (model.getTotalArea() <= 0){
             return new BusinessError("Площадь не может быть отрицательной или нулем.");
         }
 
-        if (model.getAddress().isBlank()){
+        if (model.getAddress() == null || model.getAddress().isBlank()){
             return new BusinessError("Адрес должен быть заполненным.");
         }
 
