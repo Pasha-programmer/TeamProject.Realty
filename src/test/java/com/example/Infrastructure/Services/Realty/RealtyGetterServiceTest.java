@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,14 +21,14 @@ class RealtyGetterServiceTest {
 
     private static RealtyGetter service;
 
-    private static final ArrayList<RealtyDao> testRealtyDaos = new ArrayList<>();
+    private static final List<RealtyDao> testRealtyDaos = new ArrayList<>(5);
 
     @BeforeAll
     static void setUp(){
         service = new RealtyGetterService();
 
         testRealtyDaos.add(createRealtyDao(new BigDecimal(100000), 100.5, "Москва, Ленина, 456"));
-        testRealtyDaos.add(createRealtyDao(new BigDecimal(123456.56), 123.45, "Ижевск, Удмуртская, 1"));
+        testRealtyDaos.add(createRealtyDao(new BigDecimal("123456.56"), 123.45, "Ижевск, Удмуртская, 1"));
         testRealtyDaos.add(createRealtyDao(new BigDecimal(8484), 100.5, "Уфа, Советская - 123"));
         testRealtyDaos.add(createRealtyDao(new BigDecimal(63737523), 1528, "Любой город, любая улица, любой дом"));
         testRealtyDaos.add(createRealtyDao(new BigDecimal(999999999), 956278.456, "ыфыап ыв ыав ываарео1455"));
