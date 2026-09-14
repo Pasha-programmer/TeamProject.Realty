@@ -6,6 +6,7 @@ import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.MainMenu;
 import com.example.Domain.Validators.RealtyDtoValidator;
 import com.example.Infrastructure.Services.Realty.RealtyGetterService;
+import com.example.Infrastructure.Services.Realty.Sorting.MergeSortRealtySorter;
 import com.example.Infrastructure.Services.Realty.RealtyUpdaterService;
 
 public class Main {
@@ -14,6 +15,7 @@ public class Main {
             ConsoleStageMenu mainMenu = new MainMenu(
                     scanner,
                     new RealtyGetterService(),
+                    new MergeSortRealtySorter(),
                     new RealtyUpdaterService(new RealtyDtoValidator())
             );
             mainMenu.run();
