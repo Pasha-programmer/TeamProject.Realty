@@ -1,8 +1,8 @@
 package com.example.ConsoleUI.Menu.Components;
 
-import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
-
 import java.util.Scanner;
+
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 
 /**
  * Компонент ввода текстовой информации от пользователя.

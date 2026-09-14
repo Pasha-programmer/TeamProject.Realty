@@ -1,8 +1,8 @@
 package com.example.ConsoleUI.Menu.Components;
 
-import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
-
 import java.util.Scanner;
+
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 
 /**
  * Компонент ввода числа с плавающей точкой от пользователя.
@@ -22,16 +22,15 @@ public class InputDoubleComponent extends InputComponent<Double> {
 
     @Override
     public Double read() {
-        print();
-
         while (true){
+            print();
             var value = readDouble();
 
             if (value != null){
                 return value;
             }
 
-            System.err.println("Не удалось получить нецелое число");
+            System.err.println("Не удалось получить нецелое число. Попробуйте снова. ");
         }
     }
 
@@ -60,10 +59,25 @@ public class InputDoubleComponent extends InputComponent<Double> {
     }
 
     /**
-     * Попытка парсинга числа с поддержкой разных форматов
+     * Попытка парсинга числа с поддержкой разных форматов.
+     * Последняя встреченная точка или запятая считается десятичным разделителем,
+     * все остальные точки и запятые отбрасываются как разделители разрядов.
      */
     private Double tryParseDouble(String input) {
-        var normalized = input.replace(',', '.');
+
+        var lastDot = input.lastIndexOf('.');
+        var lastComma = input.lastIndexOf(',');
+        var decimalSeparator = Math.max(lastDot, lastComma);
+
+        String normalized;
+        if (decimalSeparator < 0) {
+            normalized = input;
+        } else {
+            var integerPart = input.substring(0, decimalSeparator).replace(".", "").replace(",", "");
+            var fractionalPart = input.substring(decimalSeparator + 1).replace(".", "").replace(",", "");
+            normalized = integerPart + "." + fractionalPart;
+        }
+
         try {
             return Double.parseDouble(normalized);
         } catch (NumberFormatException e) {

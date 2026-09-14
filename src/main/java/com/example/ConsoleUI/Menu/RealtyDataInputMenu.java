@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.InputMenuOptions;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.DataInputStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.InputStrategies.UserInputStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
 
@@ -37,7 +37,7 @@ public class RealtyDataInputMenu extends ConsoleStageMenu{
         // Получаем стратегию для ввода данных
         var action = switch (choice){
             case InputMenuOptions.UserInput ->
-                new DataInputStrategy(scanner, realtySetter);
+                new UserInputStrategy(scanner, realtySetter);
             case InputMenuOptions.ImportFromFile->
                 new NotImplementedStrategy("Импорт данных из файла");
             case InputMenuOptions.RandomData ->

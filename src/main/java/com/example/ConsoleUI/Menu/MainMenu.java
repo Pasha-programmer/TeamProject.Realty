@@ -15,17 +15,20 @@ import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.SearchCountStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
+import com.example.Domain.Contracts.Realty.RealtyUpdater;
 
 public final class MainMenu extends ConsoleStageMenu {
 
-    public MainMenu(Scanner scanner, RealtyGetter realtyGetter){
+    public MainMenu(Scanner scanner, RealtyGetter realtyGetter, RealtyUpdater realtyUpdater){
         super(scanner);
         realtyListComponent = new RealtyListComponent(realtyGetter);
         this.realtyGetter = realtyGetter;
+        this.realtyUpdater = realtyUpdater;
     }
 
     private final ConsoleComponent realtyListComponent;
     private final RealtyGetter realtyGetter;
+    private final RealtyUpdater realtyUpdater;
 
     private final static SortedMap<MainMenuOptions, String> menuOptionsMap = new TreeMap<>(
         Map.ofEntries(
@@ -60,7 +63,7 @@ public final class MainMenu extends ConsoleStageMenu {
             // Получаем стратегию для выбранной опции
             var action = switch (choice){
                 case MainMenuOptions.CreateData ->
-                    new DataInputStrategy(scanner, realtyGetter);
+                    new DataInputStrategy(scanner, realtyUpdater);
                 case MainMenuOptions.SortingData ->
                     new NotImplementedStrategy("Сортировка данных");
                 case MainMenuOptions.ShowData ->

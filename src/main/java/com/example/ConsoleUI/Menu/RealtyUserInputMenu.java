@@ -2,14 +2,18 @@ package com.example.ConsoleUI.Menu;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
+import java.util.function.Function;
 
 import com.example.ConsoleUI.Menu.Components.InputDoubleComponent;
 import com.example.ConsoleUI.Menu.Components.InputMoneyComponent;
 import com.example.ConsoleUI.Menu.Components.InputStringComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuResult;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
+import com.example.Domain.Models.BusinessError;
 import com.example.Domain.Models.RealtyDto;
+import com.example.Domain.Validators.RealtyDtoValidator;
 
 /**
  * Этап ручного ввода данных недвижимости
@@ -31,27 +35,54 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
 
     @Override
     public void run() {
-        System.out.println("Введите адрес недвижимости. ");
-        var address = inputStringComponent.read();
-        System.out.println("Введите стоимость недвижимости. ");
-        var cost = inputMoneyComponent.read();
-        System.out.println("Введите размер площади. ");
-        var size = inputDoubleComponent.read();
+        System.out.println("Введите адрес недвижимости.");
+        var address = readValidated(inputStringComponent, RealtyDtoValidator::validateAddress);
+
+        System.out.println("Введите стоимость недвижимости.");
+        var cost = readValidated(inputMoneyComponent, RealtyDtoValidator::validateCost);
+
+        System.out.println("Введите размер площади.");
+        var size = readValidated(inputDoubleComponent, RealtyDtoValidator::validateTotalArea);
+
         var newRealty = RealtyDto.RealtyBuilder.create()
                                 .setAddress(address)
                                 .setCost(cost)
                                 .setTotalArea(size)
                                 .build();
 
-        var inputResult = realtySetter.addRealty(newRealty); 
-        if(!inputResult.value()){
-            System.out.println("Произошла ошибка при добавлении значения в коллекцию.");
-            System.out.print(inputResult.error());
+        var inputResult = realtySetter.addRealty(newRealty);
+        if (!inputResult.value()) {
+            var error = inputResult.error();
+            var message = error != null ? error.errorMessage() : "Неизвестная ошибка.";
+            processResult(MenuResult.stayInMenu("Не удалось добавить запись: " + message));
+            return;
+        }
+
+        processResult(MenuResult.stayInMenu("Запись успешно добавлена."));
+    }
+
+    /**
+     * Считать значение и проверить его бизнес-правилами.
+     * При ошибке валидации запрашивается только это поле, остальные введенные значения сохраняются.
+     * @param component компонент ввода (проверяет формат).
+     * @param validator бизнес-проверка конкретного поля.
+     * @return корректное значение.
+     */
+    private <T> T readValidated(InputComponent<T> component, Function<T, BusinessError> validator) {
+        while (true) {
+            var value = component.read();
+
+            var error = validator.apply(value);
+            if (error == null) {
+                return value;
+            }
+
+            System.err.println(error.errorMessage());
         }
     }
 
     @Override
     public void print() {
-        System.ou
+        System.out.println("Ручной ввод данных о недвижимости:");
     }
 }
