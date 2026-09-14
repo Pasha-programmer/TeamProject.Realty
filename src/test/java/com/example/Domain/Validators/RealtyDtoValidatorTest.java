@@ -1,8 +1,7 @@
-package com.example.Infrastructure.Services.Realty;
+package com.example.Domain.Validators;
 
 import com.example.Domain.Contracts.Validators.Validator;
 import com.example.Domain.Models.RealtyDto;
-import com.example.Domain.Validators.RealtyDtoValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Тесты для {@link RealtyDtoValidator}
  */
-class RealtyValidatorTest {
+class RealtyDtoValidatorTest {
 
     private static Validator<RealtyDto> validator;
 
