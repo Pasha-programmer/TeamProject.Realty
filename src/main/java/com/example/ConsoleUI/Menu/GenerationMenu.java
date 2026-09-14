@@ -1,7 +1,7 @@
 package com.example.ConsoleUI.Menu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.Domain.Models.RealtyDto;
-import  com.example.Infrastructure.Services.Realty.GenerationRandomHouse;
+import com.example.Infrastructure.Services.Realty.GenerationRealty;
 import com.example.Infrastructure.Services.Realty.RealtyUpdaterService;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class GenerationMenu extends ConsoleStageMenu {
             ArrayList<RealtyDto> realtyDtos = new ArrayList<>();
 
             for (int i = 0; i < num; i++) {
-                var obj = GenerationRandomHouse.generate();
+                var obj = GenerationRealty.generate();
                 realtyDtos.add(obj);
             }
             updaterService.addRealty(realtyDtos);

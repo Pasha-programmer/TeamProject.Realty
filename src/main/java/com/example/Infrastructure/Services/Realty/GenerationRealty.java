@@ -7,13 +7,13 @@ import java.util.Random;
 
 // генератор рандомных дом-объектов
 
-public class GenerationRandomHouse {
+public class GenerationRealty {
 
         private String adres;
         private int area;
         private long price;
 
-        public GenerationRandomHouse(String street, int square, long price) {
+        public GenerationRealty(String street, int square, long price) {
             this.adres = street;
             this.area = square;
             this.price = price;
