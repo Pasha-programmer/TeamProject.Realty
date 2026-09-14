@@ -70,7 +70,7 @@ class RealtyGetterServiceTest {
         var actualCount = service.getRealtyCount(filters);
 
         var expectedCount = (int) testRealtyDaos.stream()
-                .filter(r -> r.address.equals(filters.address))
+                .filter(r -> r.address.contains(filters.address))
                 .count();
 
         assertEquals(expectedCount, actualCount);
