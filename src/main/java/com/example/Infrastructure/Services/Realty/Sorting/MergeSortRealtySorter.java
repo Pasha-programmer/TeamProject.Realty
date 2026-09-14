@@ -3,10 +3,7 @@ package com.example.Infrastructure.Services.Realty.Sorting;
 import com.example.Domain.Contracts.Realty.RealtySorter;
 import com.example.Domain.Models.RealtyDto;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Сервис сортировки недвижимости с использованием алгоритма Merge Sort.
@@ -17,6 +14,8 @@ public class MergeSortRealtySorter implements RealtySorter {
             Collection<RealtyDto> realty,
             Comparator<RealtyDto> comparator
     ) {
+        Objects.requireNonNull(comparator);
+
         List<RealtyDto> list = new ArrayList<>(realty);
         List<RealtyDto> buffer = new ArrayList<>(list);
 
