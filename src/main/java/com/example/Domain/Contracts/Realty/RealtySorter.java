@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Comparator;
 
 /**
- * Сервис сортировки недвижимости.
+ * Контракт сервиса сортировки недвижимости.
  */
 public interface RealtySorter {
 
