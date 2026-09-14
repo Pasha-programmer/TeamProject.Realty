@@ -37,8 +37,6 @@ public class RealtyDtoValidator extends Validator<RealtyDto> {
             return new BusinessError("Адрес не может быть пустым.");
         }
 
-        // Запятые и точки с запятой считаем разделителями наравне с пробелами,
-        // чтобы "Ленина,15к2" разбивался так же, как "Ленина, 15к2"
         var normalized = address.trim().replace(',', ' ').replace(';', ' ');
         var lastSeparator = normalized.lastIndexOf(' ');
 
