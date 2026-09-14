@@ -5,6 +5,7 @@ import com.example.Domain.Models.RealtyDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -218,5 +219,15 @@ class MergeSortRealtySorterTest {
         assertEquals(new BigDecimal(3), resultList.get(0).getCost());
         assertEquals(new BigDecimal(2), resultList.get(1).getCost());
         assertEquals(new BigDecimal(1), resultList.get(2).getCost());
+    }
+
+    @Test
+    void sort_shouldBreakOnNullInput() {
+        assertThrows(NullPointerException.class, () -> sorter.sort(null, byCost));
+    }
+
+    @Test
+    void sort_shouldBreakOnNullComparator() {
+        assertThrows(NullPointerException.class, () -> sorter.sort(new ArrayList<>(), null));
     }
 }
