@@ -13,7 +13,9 @@ import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuResult;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
 import com.example.Domain.Models.BusinessError;
 import com.example.Domain.Models.RealtyDto;
-import com.example.Domain.Validators.RealtyDtoValidator;
+import com.example.Domain.Validators.AddressValidator;
+import com.example.Domain.Validators.CostValidator;
+import com.example.Domain.Validators.TotalAreaValidator;
 
 /**
  * Этап ручного ввода данных недвижимости
@@ -24,6 +26,9 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
     private final InputComponent<String> inputStringComponent;
     private final InputComponent<BigDecimal> inputMoneyComponent;
     private final InputComponent<Double> inputDoubleComponent;
+    private final AddressValidator addressValidator;
+    private final CostValidator costValidator;
+    private final TotalAreaValidator totalAreaValidator;
 
     public RealtyUserInputMenu(Scanner scanner, RealtyUpdater realtySetter){
         super(scanner);
@@ -31,18 +36,21 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
         this.inputStringComponent = new InputStringComponent(scanner);
         this.inputMoneyComponent = new InputMoneyComponent(scanner);
         this.inputDoubleComponent = new InputDoubleComponent(scanner);
+        this.addressValidator = new AddressValidator();
+        this.costValidator = new CostValidator();
+        this.totalAreaValidator = new TotalAreaValidator();
     }
 
     @Override
     public void run() {
         System.out.println("Введите адрес недвижимости.");
-        var address = readValidated(inputStringComponent, RealtyDtoValidator::validateAddress);
+        var address = readValidated(inputStringComponent, addressValidator::validate);
 
         System.out.println("Введите размер площади.");
-        var size = readValidated(inputDoubleComponent, RealtyDtoValidator::validateTotalArea);
+        var size = readValidated(inputDoubleComponent, totalAreaValidator::validate);
 
         System.out.println("Введите стоимость недвижимости.");
-        var cost = readValidated(inputMoneyComponent, RealtyDtoValidator::validateCost);
+        var cost = readValidated(inputMoneyComponent, costValidator::validate);
 
         var newRealty = RealtyDto.RealtyBuilder.create()
                                 .setAddress(address)

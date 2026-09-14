@@ -13,11 +13,11 @@ public class InputDoubleComponent extends InputComponent<Double> {
         super(scanner);
     }
 
-    private static final String NUMBER_MASK = "#,##0.0#";
+    private static final String NUMBER_MASK = "###,###.##";
 
     @Override
     public void print() {
-        System.out.print("Введите число с плавающей точкой (формат: " + NUMBER_MASK + "): ");
+        System.out.print("Введите число с плавающей точкой (формат: " + NUMBER_MASK + "; Пример: 213,000.12): ");
     }
 
     @Override

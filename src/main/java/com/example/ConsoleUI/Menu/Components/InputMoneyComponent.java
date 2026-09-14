@@ -18,7 +18,7 @@ public class InputMoneyComponent extends InputComponent<BigDecimal> {
 
     @Override
     public void print() {
-        System.out.print("Введите денежное значение (формат: " + MONEY_MASK + "): ");
+        System.out.print("Введите денежное значение (формат: " + MONEY_MASK + "; Пример: 213,000): ");
     }
 
     @Override
