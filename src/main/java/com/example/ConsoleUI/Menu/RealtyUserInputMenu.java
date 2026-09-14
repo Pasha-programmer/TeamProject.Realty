@@ -38,11 +38,11 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
         System.out.println("Введите адрес недвижимости.");
         var address = readValidated(inputStringComponent, RealtyDtoValidator::validateAddress);
 
-        System.out.println("Введите стоимость недвижимости.");
-        var cost = readValidated(inputMoneyComponent, RealtyDtoValidator::validateCost);
-
         System.out.println("Введите размер площади.");
         var size = readValidated(inputDoubleComponent, RealtyDtoValidator::validateTotalArea);
+
+        System.out.println("Введите стоимость недвижимости.");
+        var cost = readValidated(inputMoneyComponent, RealtyDtoValidator::validateCost);
 
         var newRealty = RealtyDto.RealtyBuilder.create()
                                 .setAddress(address)
