@@ -1,111 +1,59 @@
 package com.example.ConsoleUI.Menu;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
+import com.example.Domain.Models.RealtyDto;
 import  com.example.Infrastructure.Services.Realty.GenerationRandomHouse;
+import com.example.Infrastructure.Services.Realty.RealtyUpdaterService;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 // созддаёт меню генерации
 
-public class GenerationMenu {
+public class GenerationMenu extends ConsoleStageMenu {
 
-    public enum MenuAction {
+    @Override
+    public void run() {
 
-        ADD1("Генерация", () -> {
+        while(isRun()){
 
-            System.out.println("Число сгенерированных домов:");
-            Scanner scanner = new Scanner(System.in);
+            print();
+            int num;
 
-            String street = "";
-            int square = 0;
-            float price = 0;
-
-            GenerationRandomHouse runGenerationHouse = new GenerationRandomHouse(street, square, (long) price);
-            boolean valid = false;
-            int choice = 0;
-
-            while (!valid) {
+            while (true) {
                 try {
-                    choice = Integer.parseInt(scanner.nextLine());
-                    if (choice > 0) {
-                        valid = true;
 
-                        for (int i = 0; i < choice; i++) {
-                            GenerationRandomHouse obj = GenerationRandomHouse.generate();
-                            System.out.println(obj + "\n");
-                        }
-                    } else {
-                        System.out.println("Ошибка: введите число > 0");
-                    }
+                    num = Integer.parseInt(scanner.nextLine());
+
                 } catch (NumberFormatException e) {
-                    System.out.println("Ошибка: введите корректное число");
+                    System.err.println("Введите корректное целое число");
+                    continue;
                 }
+                break;
             }
 
-        }),
-        ADD2("Импорт из файла", () -> System.out.println("Добавлено!")),
-        ADD3("Ввод в ручную", () -> System.out.println("Добавлено!")),
+            ArrayList<RealtyDto> realtyDtos = new ArrayList<>();
 
-        //REMOVE("Удалить запись", () -> System.out.println("Удалено!")),
-        //SHOW("Показать все", () -> System.out.println("Список: ...")),
-        EXIT("Назад", () -> System.out.println("До свидания!"));
-
-        private final String title;
-        private final Runnable action;
-
-        MenuAction(String title, Runnable action) {
-            this.title = title;
-            this.action = action;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void execute() {
-            action.run();
-
-
-        }
-
-        public static void printMenu() {
-            System.out.println("\n=== Создать данные о недвижимости ===");
-            MenuAction[] items = values();
-            for (int i = 0; i < items.length; i++) {
-                System.out.printf("%d. %s%n", i + 1, items[i].getTitle());
+            for (int i = 0; i < num; i++) {
+                var obj = GenerationRandomHouse.generate();
+                realtyDtos.add(obj);
             }
-            System.out.print("Ваш выбор: ");
+            updaterService.addRealty(realtyDtos);
+
         }
+    }
 
-        public static MenuAction fromNumber(int n) {
-            MenuAction[] items = values();
-            return (n >= 1 && n <= items.length) ? items[n - 1] : null;
-        }
+    @Override
+    public void print() {
+        System.out.println("Введите количество записей: ");
+    }
 
+    private RealtyUpdaterService updaterService;
+    public GenerationMenu (Scanner scanner, RealtyUpdaterService updaterService) {
 
-        public static void getChoice (){
-
-        while (true) {
-            Scanner scanner = new Scanner(System.in);
-            GenerationMenu.MenuAction.printMenu();
-            int choice = scanner.nextInt();
-
-            GenerationMenu.MenuAction action = GenerationMenu.MenuAction.fromNumber(choice);
-            if (action == null) {
-                System.out.println("Неверный пункт, попробуйте снова.");
-                continue;
-            }
-
-            action.execute();
-
-
-            if (action == GenerationMenu.MenuAction.EXIT) break;
-
-        }}
+        super(scanner);
+        this.updaterService = updaterService;
 
     }
-}/*
-class Main {
-    public static void main(String[] args) {
-
-        GenerationMenu.MenuAction.getChoice();}
-
 }
-*/
+
+
