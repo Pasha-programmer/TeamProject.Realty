@@ -1,9 +1,9 @@
 package com.example.ConsoleUI.Menu.Contracts.Models.Common;
 
+import java.util.Scanner;
+
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.EnumWithNumber;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
-
-import java.util.Scanner;
 
 /**
  * Базовое представление меню в консоли.

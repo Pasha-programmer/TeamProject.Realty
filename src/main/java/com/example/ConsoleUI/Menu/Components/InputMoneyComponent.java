@@ -1,9 +1,9 @@
 package com.example.ConsoleUI.Menu.Components;
 
-import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
-
 import java.math.BigDecimal;
 import java.util.Scanner;
+
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 
 /**
  * Компонент ввода целого числа от пользователя.
@@ -18,21 +18,20 @@ public class InputMoneyComponent extends InputComponent<BigDecimal> {
 
     @Override
     public void print() {
-        System.out.print("Введите денежное значение (формат: " + MONEY_MASK + "): ");
+        System.out.print("Введите денежное значение (формат: " + MONEY_MASK + "; Пример: 213,000): ");
     }
 
     @Override
     public BigDecimal read() {
-        print();
-
         while (true){
+            print();
             var value = readBigDecimal();
 
             if (value != null){
                 return value;
             }
 
-            System.err.println("Не удалось получить денежное значение");
+            System.err.println("Не удалось получить денежное значение. Попробуйте снова");
         }
     }
 
