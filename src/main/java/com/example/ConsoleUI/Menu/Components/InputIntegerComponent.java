@@ -22,11 +22,24 @@ public class InputIntegerComponent extends InputComponent<Integer> {
         this.maxValue = properties.maxValue;
     }
 
-    private static final String NUMBER_MASK = "#,##0.0#";
-
     @Override
     public void print() {
-        System.out.print("Введите число с плавающей точкой (формат: " + NUMBER_MASK + "): ");
+        var text = new StringBuilder("Введите целое число");
+
+        if (minValue != null){
+            text.append(" больше ").append(minValue);
+        }
+
+        if (maxValue != null){
+            if (minValue != null){
+                text.append(" и");
+            }
+            text.append(" меньше ").append(maxValue);
+        }
+
+        text.append(": ");
+
+        System.out.print(text);
     }
 
     @Override

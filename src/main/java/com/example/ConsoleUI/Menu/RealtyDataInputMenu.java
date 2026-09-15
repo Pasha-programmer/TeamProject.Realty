@@ -8,8 +8,10 @@ import java.util.TreeMap;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.InputMenuOptions;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.InputStrategies.GenerationInputStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.InputStrategies.UserInputStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
+import com.example.Domain.Contracts.Realty.RealtyGenerator;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
 
 /**
@@ -21,10 +23,12 @@ import com.example.Domain.Contracts.Realty.RealtyUpdater;
 public class RealtyDataInputMenu extends ConsoleStageMenu{
 
     private final RealtyUpdater realtySetter;
+    private final RealtyGenerator realtyGenerator;
 
-    public RealtyDataInputMenu(Scanner scanner, RealtyUpdater realtySetter){
+    public RealtyDataInputMenu(Scanner scanner, RealtyUpdater realtySetter, RealtyGenerator realtyGenerator){
         super(scanner);
         this.realtySetter = realtySetter;
+        this.realtyGenerator = realtyGenerator;
     }
     
     private final static SortedMap<InputMenuOptions, String> dataInputMenuOptionsMap = new TreeMap<>(
@@ -47,7 +51,7 @@ public class RealtyDataInputMenu extends ConsoleStageMenu{
             case InputMenuOptions.ImportFromFile->
                 new NotImplementedStrategy("Импорт данных из файла");
             case InputMenuOptions.RandomData ->
-                new NotImplementedStrategy("Генерация случайных данных");
+                new GenerationInputStrategy(scanner, realtySetter, realtyGenerator);
             case InputMenuOptions.Cancel ->
                 new CloseMenuStrategy();
         };

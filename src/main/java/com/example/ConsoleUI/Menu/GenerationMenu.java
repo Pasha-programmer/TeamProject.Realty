@@ -27,11 +27,15 @@ public class GenerationMenu extends ConsoleStageMenu {
 
     @Override
     public void print() {
-        System.out.println("Введите количество записей: ");
+        System.out.println("Количество записей");
     }
 
     @Override
     public void run() {
+
+        if (!isRun()){
+            return;
+        }
 
         print();
 
