@@ -2,14 +2,16 @@ package com.example.Domain.Contracts.Realty;
 
 import com.example.Domain.Contracts.Monads.Result;
 
+import java.nio.file.Path;
+
 /**
- * Контракт загрузки данных о недвижимости из JSON файла.
+ * Контракт загрузки данных из файла.
  */
-public interface RealtyUploader {
+public interface RealtyImporter {
     /**
-     * Загрузить данные о недвижимости из файла.
+     * Загрузить данные из файла.
      * @param filePath абсолютный путь к файлу.
      * @return true - если загрузка прошла успешно, иначе false.
      */
-    Result<Boolean> uploadRealty(String filePath);
+    Result<Boolean> importFromFile(Path filePath);
 }

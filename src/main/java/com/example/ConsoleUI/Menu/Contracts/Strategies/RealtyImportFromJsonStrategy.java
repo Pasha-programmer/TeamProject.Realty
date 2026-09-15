@@ -3,6 +3,7 @@ package com.example.ConsoleUI.Menu.Contracts.Strategies;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuActionStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuResult;
 import com.example.ConsoleUI.Menu.RealtyImportFromJsonMenu;
+import com.example.Infrastructure.Services.Realty.RealtyImportFromJsonService;
 
 import java.util.Scanner;
 
