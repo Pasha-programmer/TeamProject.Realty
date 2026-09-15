@@ -7,9 +7,15 @@ import com.example.Infrastructure.Services.Realty.RealtyUpdaterService;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-// созддаёт меню генерации
-
+/**
+ * Меню генерации записей.
+ */
 public class GenerationMenu extends ConsoleStageMenu {
+
+    @Override
+    public void print() {
+        System.out.println("Введите количество записей: ");
+    }
 
     @Override
     public void run() {
@@ -17,6 +23,7 @@ public class GenerationMenu extends ConsoleStageMenu {
         while(isRun()){
 
             print();
+
             int num;
 
             while (true) {
@@ -25,7 +32,7 @@ public class GenerationMenu extends ConsoleStageMenu {
                     num = Integer.parseInt(scanner.nextLine());
 
                 } catch (NumberFormatException e) {
-                    System.err.println("Введите корректное целое число");
+                    System.err.println("Некорректное целое число");
                     continue;
                 }
                 break;
@@ -40,11 +47,6 @@ public class GenerationMenu extends ConsoleStageMenu {
             updaterService.addRealty(realtyDtos);
 
         }
-    }
-
-    @Override
-    public void print() {
-        System.out.println("Введите количество записей: ");
     }
 
     private RealtyUpdaterService updaterService;
