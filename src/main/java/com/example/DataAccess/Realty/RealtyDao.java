@@ -7,6 +7,18 @@ import java.math.BigDecimal;
  */
 public class RealtyDao {
 
+    public RealtyDao(){
+        this.address = null;
+        this.cost = BigDecimal.ZERO;
+        this.totalArea = 0;
+    }
+
+    public RealtyDao(String newAddress, BigDecimal newCost, double newTotalArea){
+        address = newAddress;
+        cost = newCost;
+        totalArea = newTotalArea;
+    }
+
     /**
      * Физический адрес недвижимости.
      */
