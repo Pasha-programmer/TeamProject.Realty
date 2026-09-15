@@ -3,8 +3,6 @@ package com.example.ConsoleUI.Menu.Components;
 import com.example.ConsoleUI.Menu.Components.Properties.InputIntegerComponentProperties;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 
-import java.util.Scanner;
-
 /**
  * Компонент ввода числа с плавающей точкой от пользователя.
  */
@@ -44,16 +42,16 @@ public class InputIntegerComponent extends InputComponent<Integer> {
 
     @Override
     public Integer read() {
-        print();
-
         while (true){
+            print();
+
             var value = readInteger();
 
             if (value != null){
                 return value;
             }
 
-            System.err.println("Не удалось получить корректное целое число");
+            System.err.println("Не удалось получить корректное целое число. Попробуйте снова");
         }
     }
 
