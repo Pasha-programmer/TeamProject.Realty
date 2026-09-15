@@ -1,42 +1,39 @@
 package com.example.Infrastructure.Services.External;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.MappingIterator;
+import com.example.Domain.Contracts.External.JacksonParser;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class JacksonStreamService<T> {
-    private final ObjectMapper mapper = new ObjectMapper();
+/**
+ * Сервис, реализующий функционал парсинга JSON файла, возвращает стрим данных.
+ */
+public class JacksonStreamService<T> implements JacksonParser<T> {
+    private final ObjectMapper mapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(DeserializationFeature.FAIL_ON_TRAILING_TOKENS, true);
     private final JsonFactory factory = mapper.getFactory();
 
-    public Stream<T> streamRealtyJson(File jsonFile, Class<T> theClass) throws IOException {
+    public Stream<T> streamRealtyJson(File jsonFile, Class<T> targetClass) throws IOException {
         JsonParser parser = factory.createParser(jsonFile);
+        JsonNode rootNode = mapper.readTree(parser);
 
-        while (parser.nextToken() != null && parser.nextToken() != JsonToken.START_OBJECT) {
-            // Empty loop, to move pointer
+        if (!rootNode.isArray()) {
+            throw new IllegalArgumentException("Ошибка валидации: Корневой элемент не массив.");
         }
 
-        if (parser.currentToken() == JsonToken.START_OBJECT) {
-            MappingIterator<T> iterator = mapper.readValues(parser, theClass);
-
-            return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false).onClose(() -> {
-                try {
-                    parser.close();
-                } catch (IOException e) {
-                    throw new RuntimeException("Error while closing JSONParser", e);
-                }
-            });
-        } else {
-            System.err.println("No JSON objects found in the File.");
-            parser.close();
-            return Stream.empty();
-        }
+        return StreamSupport.stream(rootNode.spliterator(), false).map(node -> {
+            try {
+                return mapper.treeToValue(node, targetClass);
+            } catch (Exception e) {
+                throw new RuntimeException("Ошибка маппинга полученного объекта.");
+            }
+        });
     }
 }

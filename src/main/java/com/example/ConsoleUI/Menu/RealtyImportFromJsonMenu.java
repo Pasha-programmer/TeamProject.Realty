@@ -7,6 +7,9 @@ import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
 
 import java.util.Scanner;
 
+/**
+ * Этап меню импорта данных из JSON файла.
+ */
 public class RealtyImportFromJsonMenu extends ConsoleStageMenu {
     private final RealtyImportFromJsonComponent realtyImportFromJsonComponent;
     private final Scanner scanner;
@@ -27,9 +30,9 @@ public class RealtyImportFromJsonMenu extends ConsoleStageMenu {
 
             processResult(action.execute());
 
-            System.out.println("\nХотите загрузить еще?(yes/no)");
-            String pathStr = scanner.nextLine().trim();
-            if (pathStr.isEmpty() || pathStr.contains("n")) {
+            System.out.println("\nХотите загрузить еще?(да/нет)");
+            String choice = scanner.nextLine().trim();
+            if (!choice.toLowerCase().contains("да")) {
                 processResult(MenuResult.closeMenu());
             }
         }
