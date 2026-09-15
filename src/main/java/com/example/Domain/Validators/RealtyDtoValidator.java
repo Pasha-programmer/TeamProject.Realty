@@ -1,30 +1,44 @@
 package com.example.Domain.Validators;
 
-import com.example.Domain.Models.BusinessError;
 import com.example.Domain.Contracts.Validators.Validator;
+import com.example.Domain.Models.BusinessError;
 import com.example.Domain.Models.RealtyDto;
 
-import java.math.BigDecimal;
-
 /**
- * Валидатор модели недвижимости
+ * Валидатор модели недвижимости.
+ * Собирает результат из валидаторов отдельных полей.
  */
 public class RealtyDtoValidator extends Validator<RealtyDto> {
 
+    private final AddressValidator addressValidator;
+    private final MoneyValidator costValidator;
+    private final TotalAreaValidator totalAreaValidator;
+
+    public RealtyDtoValidator() {
+        this(new AddressValidator(), new MoneyValidator(), new TotalAreaValidator());
+    }
+
+    public RealtyDtoValidator(
+            AddressValidator addressValidator,
+            MoneyValidator costValidator,
+            TotalAreaValidator totalAreaValidator) {
+        this.addressValidator = addressValidator;
+        this.costValidator = costValidator;
+        this.totalAreaValidator = totalAreaValidator;
+    }
+
     @Override
     public BusinessError validate(RealtyDto model) {
-        if (model.getCost() == null || model.getCost().compareTo(BigDecimal.ZERO) <= 0){
-            return new BusinessError("Стоимость должна быть заполнена и не может быть отрицательной или нулем.");
+        var addressError = addressValidator.validate(model.getAddress());
+        if (addressError != null) {
+            return addressError;
         }
 
-        if (model.getTotalArea() <= 0){
-            return new BusinessError("Площадь не может быть отрицательной или нулем.");
+        var costError = costValidator.validate(model.getCost());
+        if (costError != null) {
+            return costError;
         }
 
-        if (model.getAddress() == null || model.getAddress().isBlank()){
-            return new BusinessError("Адрес должен быть заполненным.");
-        }
-
-        return null;
+        return totalAreaValidator.validate(model.getTotalArea());
     }
 }

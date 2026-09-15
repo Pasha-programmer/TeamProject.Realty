@@ -1,13 +1,13 @@
 package com.example.Infrastructure.Services.Realty;
 
+import java.util.Collection;
+import java.util.stream.Stream;
+
 import com.example.DataAccess.Data;
 import com.example.DataAccess.Realty.RealtyDao;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Models.RealtyDto;
 import com.example.Domain.Models.RealtyFilterParametersDto;
-
-import java.util.Collection;
-import java.util.stream.Stream;
 
 /**
  * Реализация контракта {@link RealtyGetter}.

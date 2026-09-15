@@ -1,9 +1,9 @@
 package com.example.DataAccess;
 
-import com.example.DataAccess.Realty.RealtyDao;
-
 import java.util.ArrayList;
 import java.util.Collection;
+
+import com.example.DataAccess.Realty.RealtyDao;
 
 public final class Data {
 
@@ -24,5 +24,14 @@ public final class Data {
      */
     public static boolean addRealty(Collection<RealtyDao> realtyDaos){
         return realty.addAll(realtyDaos);
+    }
+
+    /**
+     * Добавить информацию о недвижимости.
+     * @param realtyDao информация о недвижимости.
+     * @return true - если добавление успешно, иначе false.
+     */
+    public static boolean addRealty(RealtyDao realtyDao){
+        return realty.add(realtyDao);
     }
 }
