@@ -27,7 +27,7 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
     private final InputComponent<BigDecimal> inputMoneyComponent;
     private final InputComponent<Double> inputDoubleComponent;
     private final AddressValidator addressValidator;
-    private final MoneyValidator costValidator;
+    private final MoneyValidator moneyValidator;
     private final TotalAreaValidator totalAreaValidator;
 
     public RealtyUserInputMenu(Scanner scanner, RealtyUpdater realtySetter){
@@ -37,7 +37,7 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
         this.inputMoneyComponent = new InputMoneyComponent(scanner);
         this.inputDoubleComponent = new InputDoubleComponent(scanner);
         this.addressValidator = new AddressValidator();
-        this.costValidator = new MoneyValidator();
+        this.moneyValidator = new MoneyValidator();
         this.totalAreaValidator = new TotalAreaValidator();
     }
 
@@ -50,7 +50,7 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
         var size = readValidated(inputDoubleComponent, totalAreaValidator::validate);
 
         System.out.println("Введите стоимость недвижимости.");
-        var cost = readValidated(inputMoneyComponent, costValidator::validate);
+        var cost = readValidated(inputMoneyComponent, moneyValidator::validate);
 
         var newRealty = RealtyDto.RealtyBuilder.create()
                                 .setAddress(address)
