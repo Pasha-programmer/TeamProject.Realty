@@ -11,16 +11,16 @@ import com.example.Domain.Models.RealtyDto;
 public class RealtyDtoValidator extends Validator<RealtyDto> {
 
     private final AddressValidator addressValidator;
-    private final CostValidator costValidator;
+    private final MoneyValidator costValidator;
     private final TotalAreaValidator totalAreaValidator;
 
     public RealtyDtoValidator() {
-        this(new AddressValidator(), new CostValidator(), new TotalAreaValidator());
+        this(new AddressValidator(), new MoneyValidator(), new TotalAreaValidator());
     }
 
     public RealtyDtoValidator(
             AddressValidator addressValidator,
-            CostValidator costValidator,
+            MoneyValidator costValidator,
             TotalAreaValidator totalAreaValidator) {
         this.addressValidator = addressValidator;
         this.costValidator = costValidator;

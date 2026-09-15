@@ -1,12 +1,12 @@
 package com.example.Domain.Validators;
 
-import com.example.Domain.Contracts.Validators.FieldValidator;
+import com.example.Domain.Contracts.Validators.Validator;
 import com.example.Domain.Models.BusinessError;
 
 /**
  * Валидатор площади: должна быть строго больше нуля.
  */
-public class TotalAreaValidator implements FieldValidator<Double> {
+public class TotalAreaValidator extends Validator<Double> {
 
     @Override
     public BusinessError validate(Double totalArea) {

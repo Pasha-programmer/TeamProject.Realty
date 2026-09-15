@@ -14,7 +14,7 @@ import com.example.Domain.Contracts.Realty.RealtyUpdater;
 import com.example.Domain.Models.BusinessError;
 import com.example.Domain.Models.RealtyDto;
 import com.example.Domain.Validators.AddressValidator;
-import com.example.Domain.Validators.CostValidator;
+import com.example.Domain.Validators.MoneyValidator;
 import com.example.Domain.Validators.TotalAreaValidator;
 
 /**
@@ -27,7 +27,7 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
     private final InputComponent<BigDecimal> inputMoneyComponent;
     private final InputComponent<Double> inputDoubleComponent;
     private final AddressValidator addressValidator;
-    private final CostValidator costValidator;
+    private final MoneyValidator costValidator;
     private final TotalAreaValidator totalAreaValidator;
 
     public RealtyUserInputMenu(Scanner scanner, RealtyUpdater realtySetter){
@@ -37,7 +37,7 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
         this.inputMoneyComponent = new InputMoneyComponent(scanner);
         this.inputDoubleComponent = new InputDoubleComponent(scanner);
         this.addressValidator = new AddressValidator();
-        this.costValidator = new CostValidator();
+        this.costValidator = new MoneyValidator();
         this.totalAreaValidator = new TotalAreaValidator();
     }
 

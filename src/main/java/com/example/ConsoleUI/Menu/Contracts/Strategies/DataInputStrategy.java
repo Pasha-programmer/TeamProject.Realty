@@ -13,14 +13,14 @@ import com.example.Domain.Contracts.Realty.RealtyUpdater;
  */
 public class DataInputStrategy implements MenuActionStrategy {
 
-    private final ConsoleStageMenu realtyDatatInputMenu;
+    private final ConsoleStageMenu realtyDataInputMenu;
 
     public DataInputStrategy(Scanner scanner, RealtyUpdater realtySetter) {
-        realtyDatatInputMenu = new RealtyDataInputMenu(scanner, realtySetter);
+        realtyDataInputMenu = new RealtyDataInputMenu(scanner, realtySetter);
     }
 
     @Override
     public MenuResult execute() {
-        return MenuResult.goToMenu(realtyDatatInputMenu);
+        return MenuResult.goToMenu(realtyDataInputMenu);
     }
 }

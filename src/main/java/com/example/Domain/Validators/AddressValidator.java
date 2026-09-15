@@ -1,13 +1,13 @@
 package com.example.Domain.Validators;
 
-import com.example.Domain.Contracts.Validators.FieldValidator;
+import com.example.Domain.Contracts.Validators.Validator;
 import com.example.Domain.Models.BusinessError;
 
 /**
  * Валидатор адреса: минимальный набор - улица и номер дома.
  * Номер дома - последний токен, содержащий цифру ("15", "15а", "15к2").
  */
-public class AddressValidator implements FieldValidator<String> {
+public class AddressValidator extends Validator<String> {
 
     @Override
     public BusinessError validate(String address) {
