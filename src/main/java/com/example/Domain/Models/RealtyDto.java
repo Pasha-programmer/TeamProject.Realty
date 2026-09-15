@@ -84,13 +84,4 @@ public class RealtyDto {
             return realtyDto;
         }
     }
-
-    @Override
-    public String toString() {
-        return "RealtyDto{" +
-                "address='" + address + '\'' +
-                ", cost=" + cost +
-                ", totalArea=" + totalArea +
-                '}';
-    }
 }
