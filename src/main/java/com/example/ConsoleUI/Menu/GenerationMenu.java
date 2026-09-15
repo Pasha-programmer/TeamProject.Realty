@@ -33,16 +33,25 @@ public class GenerationMenu extends ConsoleStageMenu {
     @Override
     public void run() {
 
-        while(isRun()){
+        print();
 
-            print();
+        var count = integerInputComponent.read();
 
-            var count = integerInputComponent.read();
+        var realtyDtos = realtyGenerator.generate(count);
 
-            var realtyDtos = realtyGenerator.generate(count);
+        System.out.println("Сгенерировано записей: " + realtyDtos.size());
 
-            updaterService.addRealty(realtyDtos);
+        var saveResult = updaterService.addRealty(realtyDtos);
+
+        if (!saveResult.value()){
+            System.out.println(saveResult.error().errorMessage());
+            stopRun();
+            return;
         }
+
+        System.out.println("Записи сохранены");
+
+        stopRun();
     }
 
 }
