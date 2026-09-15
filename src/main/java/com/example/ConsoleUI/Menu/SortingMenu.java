@@ -1,5 +1,6 @@
 package com.example.ConsoleUI.Menu;
 
+import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleDataComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.SortingMenuOptions;
@@ -21,13 +22,12 @@ public class SortingMenu extends ConsoleStageMenu {
     public SortingMenu(
             Scanner scanner,
             RealtyGetter realtyGetter,
-            RealtySorter realtySorter,
-            ConsoleDataComponent<Collection<RealtyDto>> realtyListComponent
+            RealtySorter realtySorter
     ) {
         super(scanner);
         this.realtyGetter = realtyGetter;
         this.realtySorter = realtySorter;
-        this.realtyListComponent = realtyListComponent;
+        this.realtyListComponent = new RealtyListComponent(realtyGetter);
     }
 
     private final RealtyGetter realtyGetter;
