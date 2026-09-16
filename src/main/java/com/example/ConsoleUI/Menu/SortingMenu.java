@@ -1,8 +1,11 @@
 package com.example.ConsoleUI.Menu;
 
+import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleDataComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuActionStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.SortingMenuOptions;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Contracts.Realty.RealtySorter;
 import com.example.Domain.Contracts.Realty.RealtySortingStrategy;
@@ -19,13 +22,12 @@ public class SortingMenu extends ConsoleStageMenu {
     public SortingMenu(
             Scanner scanner,
             RealtyGetter realtyGetter,
-            RealtySorter realtySorter,
-            ConsoleDataComponent<Collection<RealtyDto>> realtyListComponent
+            RealtySorter realtySorter
     ) {
         super(scanner);
         this.realtyGetter = realtyGetter;
         this.realtySorter = realtySorter;
-        this.realtyListComponent = realtyListComponent;
+        this.realtyListComponent = new RealtyListComponent(realtyGetter);
     }
 
     private final RealtyGetter realtyGetter;
@@ -38,41 +40,57 @@ public class SortingMenu extends ConsoleStageMenu {
                     Map.entry(SortingMenuOptions.ByArea, "По площади"),
                     Map.entry(SortingMenuOptions.ByCost, "По стоимости"),
                     Map.entry(SortingMenuOptions.ByAllFields, "По всем полям"),
-                    Map.entry(SortingMenuOptions.ByEvenCost, "По четной стоимости")
+                    Map.entry(SortingMenuOptions.ByEvenCost, "По четной стоимости"),
+                    Map.entry(SortingMenuOptions.Cancel, "Отмена")
             )
     );
 
     @Override
     public void run() {
+        MenuActionStrategy menuActionStrategy;
+
         print();
 
-        var choice = readOption(SortingMenuOptions.class);
+        while (isRun()) {
 
-        RealtySortingStrategy sortingStrategy = switch (choice) {
-            case ByAddress -> new ComparatorRealtySortingStrategy(
-                    realtySorter,
-                    new AddressSortingStrategy()
-            );
-            case ByArea -> new ComparatorRealtySortingStrategy(
-                    realtySorter,
-                    new AreaSortingStrategy()
-            );
-            case ByCost -> new ComparatorRealtySortingStrategy(
-                    realtySorter,
-                    new CostSortingStrategy()
-            );
-            case ByAllFields -> new ComparatorRealtySortingStrategy(
-                    realtySorter,
-                    new AllFieldsSortingStrategy()
-            );
-            case ByEvenCost -> new EvenCostRealtySortingStrategy(realtySorter);
-        };
+            var choice = readOption(SortingMenuOptions.class);
 
-        var realty = realtyGetter.getRealty(null);
+            if (choice != SortingMenuOptions.Cancel) {
 
-        var sortedRealty = sortingStrategy.sort(realty);
+                RealtySortingStrategy sortingStrategy = switch (choice) {
+                    case ByAddress -> new ComparatorRealtySortingStrategy(
+                            realtySorter,
+                            new AddressSortingStrategy()
+                    );
+                    case ByArea -> new ComparatorRealtySortingStrategy(
+                            realtySorter,
+                            new AreaSortingStrategy()
+                    );
+                    case ByCost -> new ComparatorRealtySortingStrategy(
+                            realtySorter,
+                            new CostSortingStrategy()
+                    );
+                    case ByAllFields -> new ComparatorRealtySortingStrategy(
+                            realtySorter,
+                            new AllFieldsSortingStrategy()
+                    );
+                    case ByEvenCost -> new EvenCostRealtySortingStrategy(realtySorter);
+                    case Cancel -> throw new IllegalStateException();
+                };
 
-        realtyListComponent.print(sortedRealty);
+                var realty = realtyGetter.getRealty(null);
+
+                var sortedRealty = sortingStrategy.sort(realty);
+
+                realtyListComponent.print(sortedRealty);
+            }
+
+            menuActionStrategy = new CloseMenuStrategy();
+
+            var menuResult = menuActionStrategy.execute();
+
+            processResult(menuResult);
+        }
     }
 
     @Override
