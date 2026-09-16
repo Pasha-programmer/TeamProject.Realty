@@ -10,12 +10,7 @@ import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleDataComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.DataInputStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.ExitStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.SearchCountStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.SortingDataStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.*;
 import com.example.Domain.Contracts.Realty.RealtyGenerator;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Contracts.Realty.RealtySorter;
@@ -51,6 +46,7 @@ public final class MainMenu extends ConsoleStageMenu {
             Map.entry(MainMenuOptions.SortingData, "Отсортировать данные"),
             Map.entry(MainMenuOptions.ShowData, "Показать данные"),
             Map.entry(MainMenuOptions.Search, "Поиск"),
+            Map.entry(MainMenuOptions.SaveToFile, "Сохранить в файл"),
             Map.entry(MainMenuOptions.Exit, "Выход")
         )
     );
@@ -85,6 +81,8 @@ public final class MainMenu extends ConsoleStageMenu {
                     new ShowDataStrategy(realtyListComponent);
                 case MainMenuOptions.Search ->
                     new SearchCountStrategy(scanner, realtyGetter);
+                case MainMenuOptions.SaveToFile ->
+                    new SaveToFileStrategy(scanner, realtyGetter);
                 case MainMenuOptions.Exit ->
                     new ExitStrategy();
                 default ->

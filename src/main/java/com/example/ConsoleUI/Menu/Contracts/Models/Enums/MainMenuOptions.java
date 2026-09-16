@@ -9,7 +9,8 @@ public enum MainMenuOptions implements EnumWithNumber {
     ShowData(3),
     Search(4),
     ImportData(5),
-    Exit(6);
+    SaveToFile(6),
+    Exit(7);
 
     private final int value;
 

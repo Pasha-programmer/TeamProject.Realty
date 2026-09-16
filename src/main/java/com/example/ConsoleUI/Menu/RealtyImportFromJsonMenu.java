@@ -5,7 +5,6 @@ import com.example.ConsoleUI.Menu.Components.Properties.InputFilePathComponentPr
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuActionStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuResult;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.StayInMenuStrategy;
 import com.example.Domain.Contracts.Realty.RealtyImporter;
