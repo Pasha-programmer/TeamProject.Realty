@@ -47,7 +47,7 @@ public class RealtyListComponent extends ConsoleDataComponent<Collection<RealtyD
 
     private String FormatRealty(RealtyDto realty){
         return "Адрес: " + realty.getAddress()
-                + "\tПлощадь: " + realty.getTotalArea() + "м2"
-                + "\tСтоимость: " + realty.getCost() + "руб.";
+                + "\tПлощадь: " + Math.round(realty.getTotalArea() * 100) / 100.0 + " м2"
+                + "\tСтоимость: " + Math.round(realty.getCost().doubleValue() * 100) / 100.0 + " руб.";
     }
 }
