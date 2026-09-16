@@ -42,7 +42,6 @@ public final class MainMenu extends ConsoleStageMenu {
             Map.entry(MainMenuOptions.SortingData, "Отсортировать данные"),
             Map.entry(MainMenuOptions.ShowData, "Показать данные"),
             Map.entry(MainMenuOptions.Search, "Поиск"),
-            Map.entry(MainMenuOptions.ImportData, "Загрузить данные из файла"),
             Map.entry(MainMenuOptions.Exit, "Выход")
         )
     );
@@ -77,8 +76,6 @@ public final class MainMenu extends ConsoleStageMenu {
                     new ShowDataStrategy(realtyListComponent);
                 case MainMenuOptions.Search ->
                     new SearchCountStrategy(scanner, realtyGetter);
-                case MainMenuOptions.ImportData ->
-                    new RealtyImportFromJsonStrategy(scanner);
                 case MainMenuOptions.Exit ->
                     new ExitStrategy();
                 default ->

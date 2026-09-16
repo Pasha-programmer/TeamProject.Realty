@@ -10,6 +10,7 @@ import com.example.ConsoleUI.Menu.Contracts.Models.Enums.InputMenuOptions;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.InputStrategies.UserInputStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.RealtyImportFromJsonStrategy;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
 
 /**
@@ -19,18 +20,19 @@ import com.example.Domain.Contracts.Realty.RealtyUpdater;
  * Генерация случайных данных
  */
 public class RealtyDataInputMenu extends ConsoleStageMenu{
-
+    private final Scanner scanner;
     private final RealtyUpdater realtySetter;
 
     public RealtyDataInputMenu(Scanner scanner, RealtyUpdater realtySetter){
         super(scanner);
+        this.scanner = scanner;
         this.realtySetter = realtySetter;
     }
     
     private final static SortedMap<InputMenuOptions, String> dataInputMenuOptionsMap = new TreeMap<>(
         Map.ofEntries(
             Map.entry(InputMenuOptions.UserInput, "Ручной ввод данных"),
-            Map.entry(InputMenuOptions.ImportFromFile, "Импорт данных из файла"),
+            Map.entry(InputMenuOptions.ImportFromFile, "Загрузить данные из файла"),
             Map.entry(InputMenuOptions.RandomData, "Генерация случайных данных"),
             Map.entry(InputMenuOptions.Cancel, "Отмена")
         )
@@ -45,7 +47,7 @@ public class RealtyDataInputMenu extends ConsoleStageMenu{
             case InputMenuOptions.UserInput ->
                 new UserInputStrategy(scanner, realtySetter);
             case InputMenuOptions.ImportFromFile->
-                new NotImplementedStrategy("Импорт данных из файла");
+                new RealtyImportFromJsonStrategy(scanner);
             case InputMenuOptions.RandomData ->
                 new NotImplementedStrategy("Генерация случайных данных");
             case InputMenuOptions.Cancel ->
