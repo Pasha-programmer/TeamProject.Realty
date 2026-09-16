@@ -42,26 +42,28 @@ public class RealtyDataInputMenu extends ConsoleStageMenu{
     
     @Override
     public void run() {
-        print();
-        var choice = readOption(InputMenuOptions.class);
-        // Получаем стратегию для ввода данных
-        var action = switch (choice){
-            case InputMenuOptions.UserInput ->
-                new UserInputStrategy(scanner, realtySetter);
-            case InputMenuOptions.ImportFromFile->
-                new RealtyImportFromJsonStrategy(scanner);
-            case InputMenuOptions.RandomData ->
-                new GenerationInputStrategy(scanner, realtySetter, realtyGenerator);
-            case InputMenuOptions.Cancel ->
-                new CloseMenuStrategy();
-        };
+        while (isRun()){
+            print();
 
-        // Выполняем стратегию и получаем результат
-        var result = action.execute();
+            var choice = readOption(InputMenuOptions.class);
+            // Получаем стратегию для ввода данных
+            var action = switch (choice){
+                case InputMenuOptions.UserInput ->
+                    new UserInputStrategy(scanner, realtySetter);
+                case InputMenuOptions.ImportFromFile->
+                    new RealtyImportFromJsonStrategy(scanner);
+                case InputMenuOptions.RandomData ->
+                    new GenerationInputStrategy(scanner, realtySetter, realtyGenerator);
+                case InputMenuOptions.Cancel ->
+                    new CloseMenuStrategy();
+            };
 
-        // Обрабатываем результат
-        processResult(result);
+            // Выполняем стратегию и получаем результат
+            var result = action.execute();
 
+            // Обрабатываем результат
+            processResult(result);
+        }
     }
 
     @Override

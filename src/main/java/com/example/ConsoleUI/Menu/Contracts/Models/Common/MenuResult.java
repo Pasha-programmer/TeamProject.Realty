@@ -67,6 +67,13 @@ public class MenuResult {
         return new MenuResult(null, false, null, null);
     }
 
+    /**
+     * Закрыть текущее меню с сообщением.
+     */
+    public static MenuResult closeMenu(String message) {
+        return new MenuResult(null, false, null, message);
+    }
+
     public ConsoleStageMenu getNextMenu() {
         return nextMenu;
     }

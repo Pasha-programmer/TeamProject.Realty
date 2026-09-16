@@ -4,22 +4,18 @@ import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuActionStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuResult;
 
 /**
- * Стратегия закрытия меню.
+ * Стратегия остаться в меню.
  */
-public class CloseMenuStrategy implements MenuActionStrategy {
+public class StayInMenuStrategy implements MenuActionStrategy {
 
     private final String message;
 
-    public CloseMenuStrategy(){
-        this.message = null;
-    }
-
-    public CloseMenuStrategy(String message){
+    public StayInMenuStrategy(String message){
         this.message = message;
     }
 
     @Override
     public MenuResult execute() {
-        return MenuResult.closeMenu(message);
+        return MenuResult.stayInMenu(message);
     }
 }
