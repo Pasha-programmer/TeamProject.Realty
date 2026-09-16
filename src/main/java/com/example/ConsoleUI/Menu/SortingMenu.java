@@ -3,7 +3,10 @@ package com.example.ConsoleUI.Menu;
 import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleDataComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuActionStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.SortingMenuOptions;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Contracts.Realty.RealtySorter;
 import com.example.Domain.Models.RealtyDto;
@@ -39,30 +42,45 @@ public class SortingMenu extends ConsoleStageMenu {
                     Map.entry(SortingMenuOptions.ByAddress, "По адресу"),
                     Map.entry(SortingMenuOptions.ByArea, "По площади"),
                     Map.entry(SortingMenuOptions.ByCost, "По стоимости"),
-                    Map.entry(SortingMenuOptions.ByAllFields, "По всем полям")
+                    Map.entry(SortingMenuOptions.ByAllFields, "По всем полям"),
+                    Map.entry(SortingMenuOptions.Cancel, "Отмена")
             )
     );
 
     @Override
     public void run() {
+        MenuActionStrategy menuActionStrategy;
+
         print();
 
-        var choice = readOption(SortingMenuOptions.class);
+        while (isRun()){
 
-        var sortingStrategy = switch (choice) {
-            case ByAddress -> new AddressSortingStrategy();
-            case ByArea -> new AreaSortingStrategy();
-            case ByCost -> new CostSortingStrategy();
-            case ByAllFields -> new AllFieldsSortingStrategy();
-        };
+            var choice = readOption(SortingMenuOptions.class);
 
-        var comparator = sortingStrategy.getComparator();
+            if (choice != SortingMenuOptions.Cancel) {
+                var sortingStrategy = switch (choice) {
+                    case ByAddress -> new AddressSortingStrategy();
+                    case ByArea -> new AreaSortingStrategy();
+                    case ByCost -> new CostSortingStrategy();
+                    case ByAllFields -> new AllFieldsSortingStrategy();
+                    case Cancel -> throw new IllegalStateException();
+                };
 
-        var realty = realtyGetter.getRealty(null);
+                var comparator = sortingStrategy.getComparator();
 
-        var sortedRealty = realtySorter.sort(realty, comparator);
+                var realty = realtyGetter.getRealty(null);
 
-        realtyListComponent.print(sortedRealty);
+                var sortedRealty = realtySorter.sort(realty, comparator);
+
+                realtyListComponent.print(sortedRealty);
+            }
+
+            menuActionStrategy = new CloseMenuStrategy();
+
+            var menuResult = menuActionStrategy.execute();
+
+            processResult(menuResult);
+        }
     }
 
     @Override

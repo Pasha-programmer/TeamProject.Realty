@@ -9,7 +9,9 @@ import com.example.ConsoleUI.Menu.Components.InputMoneyComponent;
 import com.example.ConsoleUI.Menu.Components.InputStringComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuActionStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuResult;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
 import com.example.Domain.Models.BusinessError;
 import com.example.Domain.Models.RealtyDto;
@@ -43,30 +45,39 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
 
     @Override
     public void run() {
-        System.out.println("Введите адрес недвижимости.");
-        var address = readValidated(inputStringComponent, addressValidator::validate);
+        MenuActionStrategy menuActionStrategy;
 
-        System.out.println("Введите размер площади.");
-        var size = readValidated(inputDoubleComponent, totalAreaValidator::validate);
+        while (isRun()){
 
-        System.out.println("Введите стоимость недвижимости.");
-        var cost = readValidated(inputMoneyComponent, moneyValidator::validate);
+            System.out.println("Введите адрес недвижимости.");
+            var address = readValidated(inputStringComponent, addressValidator::validate);
 
-        var newRealty = RealtyDto.RealtyBuilder.create()
-                                .setAddress(address)
-                                .setCost(cost)
-                                .setTotalArea(size)
-                                .build();
+            System.out.println("Введите размер площади.");
+            var size = readValidated(inputDoubleComponent, totalAreaValidator::validate);
 
-        var inputResult = realtySetter.addRealty(newRealty);
-        if (!inputResult.value()) {
-            var error = inputResult.error();
-            var message = error != null ? error.errorMessage() : "Неизвестная ошибка.";
-            processResult(MenuResult.stayInMenu("Не удалось добавить запись: " + message));
-            return;
+            System.out.println("Введите стоимость недвижимости.");
+            var cost = readValidated(inputMoneyComponent, moneyValidator::validate);
+
+            var newRealty = RealtyDto.RealtyBuilder.create()
+                                    .setAddress(address)
+                                    .setCost(cost)
+                                    .setTotalArea(size)
+                                    .build();
+
+            var inputResult = realtySetter.addRealty(newRealty);
+            if (!inputResult.value()) {
+                var error = inputResult.error();
+                var message = error != null ? error.errorMessage() : "Неизвестная ошибка.";
+                menuActionStrategy = new CloseMenuStrategy("Не удалось добавить запись: " + message);
+            }
+            else {
+                menuActionStrategy = new CloseMenuStrategy("Запись успешно добавлена.");
+            }
+
+            var menuResult = menuActionStrategy.execute();
+
+            processResult(menuResult);
         }
-
-        processResult(MenuResult.stayInMenu("Запись успешно добавлена."));
     }
 
     /**
@@ -91,6 +102,6 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
 
     @Override
     public void print() {
-        System.out.println("Ручной ввод данных о недвижимости:");
+        System.out.println("\nРучной ввод данных о недвижимости:");
     }
 }

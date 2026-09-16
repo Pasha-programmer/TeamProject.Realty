@@ -4,6 +4,8 @@ import com.example.ConsoleUI.Menu.Components.InputIntegerComponent;
 import com.example.ConsoleUI.Menu.Components.Properties.InputIntegerComponentProperties;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuActionStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
 import com.example.Domain.Contracts.Realty.RealtyGenerator;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
 
@@ -20,42 +22,43 @@ public class GenerationMenu extends ConsoleStageMenu {
 
     public GenerationMenu(Scanner scanner, RealtyUpdater updaterService, RealtyGenerator realtyGenerator){
         super(scanner);
-        integerInputComponent = new InputIntegerComponent(new InputIntegerComponentProperties(scanner, 1, 1000));
+        integerInputComponent = new InputIntegerComponent(new InputIntegerComponentProperties(scanner, "Количество записей", 1, 1000));
         this.updaterService = updaterService;
         this.realtyGenerator = realtyGenerator;
     }
 
     @Override
     public void print() {
-        System.out.println("Количество записей");
+        System.out.println("\nГенерация данных:");
     }
 
     @Override
     public void run() {
+        MenuActionStrategy menuActionStrategy;
 
-        if (!isRun()){
-            return;
+        if (isRun()){
+
+            print();
+
+            var count = integerInputComponent.read();
+
+            var realtyDtos = realtyGenerator.generate(count);
+
+            System.out.println("Сгенерировано записей: " + realtyDtos.size());
+
+            var saveResult = updaterService.addRealty(realtyDtos);
+
+            if (!saveResult.value()){
+                menuActionStrategy = new CloseMenuStrategy(saveResult.error().errorMessage());
+            }
+            else {
+                menuActionStrategy = new CloseMenuStrategy("Записи сохранены");
+            }
+
+            var menuResult = menuActionStrategy.execute();
+
+            processResult(menuResult);
         }
-
-        print();
-
-        var count = integerInputComponent.read();
-
-        var realtyDtos = realtyGenerator.generate(count);
-
-        System.out.println("Сгенерировано записей: " + realtyDtos.size());
-
-        var saveResult = updaterService.addRealty(realtyDtos);
-
-        if (!saveResult.value()){
-            System.out.println(saveResult.error().errorMessage());
-            stopRun();
-            return;
-        }
-
-        System.out.println("Записи сохранены");
-
-        stopRun();
     }
 
 }

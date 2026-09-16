@@ -4,6 +4,10 @@ import com.example.ConsoleUI.Menu.Components.InputFilePathComponent;
 import com.example.ConsoleUI.Menu.Components.Properties.InputFilePathComponentProperties;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuActionStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuResult;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.StayInMenuStrategy;
 import com.example.Domain.Contracts.Realty.RealtyImporter;
 import com.example.Domain.Validators.RealtyDtoValidator;
 import com.example.Infrastructure.Services.External.JacksonJsonParserService;
@@ -28,25 +32,35 @@ public class RealtyImportFromJsonMenu extends ConsoleStageMenu {
 
     @Override
     public void run() {
+        MenuActionStrategy menuActionStrategy;
+
+        print();
+
         while (isRun()) {
             var filePath = inputFilePathComponent.read();
 
             var importResult = realtyImporter.importFromFile(filePath);
 
             if (!importResult.value() && importResult.error() != null){
-                System.out.println(importResult.error().errorMessage());
-                continue;
+                menuActionStrategy = new CloseMenuStrategy(importResult.error().errorMessage());
+            }
+            else {
+                var isImportAgain = canImportAgain();
+
+                menuActionStrategy = isImportAgain
+                        ? new StayInMenuStrategy("Новый импорт из файла")
+                        : new CloseMenuStrategy();
             }
 
-            if (!canImportAgain()){
-                break;
-            }
+            var menuResult = menuActionStrategy.execute();
+
+            processResult(menuResult);
         }
     }
 
     @Override
     public void print() {
-
+        System.out.println("\nИмпорт данных из файла:");
     }
 
     /**
