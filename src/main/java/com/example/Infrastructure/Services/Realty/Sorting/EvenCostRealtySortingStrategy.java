@@ -10,6 +10,12 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Стратегия сортировки недвижимости с чётной целой частью стоимости.
+ * Объекты с нечётной целой частью стоимости остаются
+ * на исходных позициях, а объекты с чётной целой частью
+ * стоимости сортируются по возрастанию стоимости.
+ */
 public class EvenCostRealtySortingStrategy implements RealtySortingStrategy {
 
     private final RealtySorter realtySorter;

@@ -7,6 +7,9 @@ import com.example.Domain.Models.RealtyDto;
 
 import java.util.Collection;
 
+/**
+ * Стратегия сортировки недвижимости с использованием компаратора.
+ */
 public class ComparatorRealtySortingStrategy implements RealtySortingStrategy {
 
     private final RealtySorter realtySorter;
