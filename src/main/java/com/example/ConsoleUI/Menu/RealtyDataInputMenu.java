@@ -68,9 +68,12 @@ public class RealtyDataInputMenu extends ConsoleStageMenu{
 
     @Override
     public void print() {
+        System.out.println("\nМеню создания данных о недвижимости:");
+
         dataInputMenuOptionsMap.forEach((key,value) -> {
             System.out.println("\t" + key.getValue() + ". " + value);
         });
+
         System.out.print("Выберите опцию: ");
     }
 }

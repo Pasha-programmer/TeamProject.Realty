@@ -34,6 +34,8 @@ public class RealtyImportFromJsonMenu extends ConsoleStageMenu {
     public void run() {
         MenuActionStrategy menuActionStrategy;
 
+        print();
+
         while (isRun()) {
             var filePath = inputFilePathComponent.read();
 
@@ -58,7 +60,7 @@ public class RealtyImportFromJsonMenu extends ConsoleStageMenu {
 
     @Override
     public void print() {
-
+        System.out.println("\nИмпорт данных из файла:");
     }
 
     /**

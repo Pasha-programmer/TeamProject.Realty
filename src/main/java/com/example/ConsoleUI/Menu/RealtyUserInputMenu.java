@@ -102,6 +102,6 @@ public class RealtyUserInputMenu extends ConsoleStageMenu {
 
     @Override
     public void print() {
-        System.out.println("Ручной ввод данных о недвижимости:");
+        System.out.println("\nРучной ввод данных о недвижимости:");
     }
 }

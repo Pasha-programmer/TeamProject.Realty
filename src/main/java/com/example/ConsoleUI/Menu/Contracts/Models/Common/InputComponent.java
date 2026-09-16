@@ -11,7 +11,13 @@ public abstract class InputComponent<T> extends ConsoleComponent {
         this.scanner = scanner;
     }
 
+    protected InputComponent(Scanner scanner, String label){
+        this.scanner = scanner;
+        this.label = label;
+    }
+
     protected final Scanner scanner;
+    protected String label;
 
     /**
      * Считать ввод

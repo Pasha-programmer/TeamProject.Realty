@@ -95,6 +95,8 @@ public class RealtyFieldChoiceMenu extends ConsoleStageMenu {
 
     @Override
     public void print() {
+        System.out.println("\nМеню поиска:");
+
         menuOptionsMap.forEach((key, value) -> {
             System.out.println("\t" + key.getValue() + ". " + value);
         });

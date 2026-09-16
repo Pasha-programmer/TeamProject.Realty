@@ -14,7 +14,7 @@ public class InputIntegerComponent extends InputComponent<Integer> {
 
     public InputIntegerComponent(InputIntegerComponentProperties properties){
 
-        super(properties.scanner);
+        super(properties.scanner, properties.label);
 
         this.minValue = properties.minValue;
         this.maxValue = properties.maxValue;
@@ -22,22 +22,28 @@ public class InputIntegerComponent extends InputComponent<Integer> {
 
     @Override
     public void print() {
-        var text = new StringBuilder("Введите целое число");
+        var tooltip = new StringBuilder("Введите целое число");
 
         if (minValue != null){
-            text.append(" больше ").append(minValue);
+            tooltip.append(" больше ").append(minValue);
         }
 
         if (maxValue != null){
             if (minValue != null){
-                text.append(" и");
+                tooltip.append(" и");
             }
-            text.append(" меньше ").append(maxValue);
+            tooltip.append(" меньше ").append(maxValue);
         }
 
-        text.append(": ");
+        if (!label.isEmpty()){
+            System.out.print(label);
+            tooltip.insert(0, " (");
+            tooltip.append(')');
+        }
 
-        System.out.print(text);
+        tooltip.append(": ");
+
+        System.out.print(tooltip);
     }
 
     @Override

@@ -7,17 +7,12 @@ import java.util.Scanner;
 /**
  * Свойства компоненты {@link InputFilePathComponent}
  */
-public class InputFilePathComponentProperties {
+public class InputFilePathComponentProperties extends InputComponentProperties {
 
     public InputFilePathComponentProperties(Scanner scanner, String extension){
-        this.scanner = scanner;
+        super(scanner);
         this.extension = extension;
     }
-
-    /**
-     * Сканнер.
-     */
-    public Scanner scanner;
 
     /**
      * Требуемое расширение файла.

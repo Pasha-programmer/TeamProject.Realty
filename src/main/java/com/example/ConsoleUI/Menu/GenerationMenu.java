@@ -22,14 +22,14 @@ public class GenerationMenu extends ConsoleStageMenu {
 
     public GenerationMenu(Scanner scanner, RealtyUpdater updaterService, RealtyGenerator realtyGenerator){
         super(scanner);
-        integerInputComponent = new InputIntegerComponent(new InputIntegerComponentProperties(scanner, 1, 1000));
+        integerInputComponent = new InputIntegerComponent(new InputIntegerComponentProperties(scanner, "Количество записей", 1, 1000));
         this.updaterService = updaterService;
         this.realtyGenerator = realtyGenerator;
     }
 
     @Override
     public void print() {
-        System.out.println("Количество записей");
+        System.out.println("\nГенерация данных:");
     }
 
     @Override

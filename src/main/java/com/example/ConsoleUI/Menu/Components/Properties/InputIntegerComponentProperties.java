@@ -7,22 +7,21 @@ import java.util.Scanner;
 /**
  * Свойства для компоненты {@link InputIntegerComponent}
  */
-public class InputIntegerComponentProperties {
+public class InputIntegerComponentProperties extends InputComponentProperties {
 
     public InputIntegerComponentProperties(Scanner scanner){
-        this.scanner = scanner;
+        super(scanner);
     }
 
-    public InputIntegerComponentProperties(Scanner scanner, Integer minValue, Integer maxValue){
-        this(scanner);
+    public InputIntegerComponentProperties(Scanner scanner, String label){
+        super(scanner, label);
+    }
+
+    public InputIntegerComponentProperties(Scanner scanner, String label, Integer minValue, Integer maxValue){
+        this(scanner, label);
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
-
-    /**
-     * Сканер для чтения с консоли.
-     */
-    public Scanner scanner;
 
     /**
      * Минимальное валидное значение.
