@@ -5,13 +5,13 @@ import com.example.ConsoleUI.Menu.Components.Properties.InputFilePathComponentPr
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.InputComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuActionStrategy;
-import com.example.ConsoleUI.Menu.Contracts.Models.Common.MenuResult;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.CloseMenuStrategy;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.StayInMenuStrategy;
 import com.example.Domain.Contracts.Realty.RealtyImporter;
 import com.example.Domain.Validators.RealtyDtoValidator;
 import com.example.Infrastructure.Services.External.JacksonJsonParserService;
 import com.example.Infrastructure.Services.Realty.RealtyImportFromJsonService;
+import com.example.Infrastructure.Services.Realty.RealtyUpdaterService;
 
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -27,7 +27,8 @@ public class RealtyImportFromJsonMenu extends ConsoleStageMenu {
     public RealtyImportFromJsonMenu(Scanner scanner) {
         super(scanner);
         this.inputFilePathComponent = new InputFilePathComponent(new InputFilePathComponentProperties(scanner, "json"));
-        this.realtyImporter = new RealtyImportFromJsonService(new RealtyDtoValidator(), new JacksonJsonParserService<>());
+        var validator = new RealtyDtoValidator();
+        this.realtyImporter = new RealtyImportFromJsonService(validator, new JacksonJsonParserService<>(), new RealtyUpdaterService(validator));
     }
 
     @Override
