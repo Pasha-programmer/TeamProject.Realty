@@ -5,11 +5,9 @@ import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.SortingMenuOptions;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Contracts.Realty.RealtySorter;
+import com.example.Domain.Contracts.Realty.RealtySortingStrategy;
 import com.example.Domain.Models.RealtyDto;
-import com.example.Infrastructure.Services.Realty.Sorting.AddressSortingStrategy;
-import com.example.Infrastructure.Services.Realty.Sorting.AllFieldsSortingStrategy;
-import com.example.Infrastructure.Services.Realty.Sorting.AreaSortingStrategy;
-import com.example.Infrastructure.Services.Realty.Sorting.CostSortingStrategy;
+import com.example.Infrastructure.Services.Realty.Sorting.*;
 
 import java.util.*;
 
@@ -39,7 +37,8 @@ public class SortingMenu extends ConsoleStageMenu {
                     Map.entry(SortingMenuOptions.ByAddress, "По адресу"),
                     Map.entry(SortingMenuOptions.ByArea, "По площади"),
                     Map.entry(SortingMenuOptions.ByCost, "По стоимости"),
-                    Map.entry(SortingMenuOptions.ByAllFields, "По всем полям")
+                    Map.entry(SortingMenuOptions.ByAllFields, "По всем полям"),
+                    Map.entry(SortingMenuOptions.ByEvenCost, "По четной стоимости")
             )
     );
 
@@ -49,18 +48,29 @@ public class SortingMenu extends ConsoleStageMenu {
 
         var choice = readOption(SortingMenuOptions.class);
 
-        var sortingStrategy = switch (choice) {
-            case ByAddress -> new AddressSortingStrategy();
-            case ByArea -> new AreaSortingStrategy();
-            case ByCost -> new CostSortingStrategy();
-            case ByAllFields -> new AllFieldsSortingStrategy();
+        RealtySortingStrategy sortingStrategy = switch (choice) {
+            case ByAddress -> new ComparatorRealtySortingStrategy(
+                    realtySorter,
+                    new AddressSortingStrategy()
+            );
+            case ByArea -> new ComparatorRealtySortingStrategy(
+                    realtySorter,
+                    new AreaSortingStrategy()
+            );
+            case ByCost -> new ComparatorRealtySortingStrategy(
+                    realtySorter,
+                    new CostSortingStrategy()
+            );
+            case ByAllFields -> new ComparatorRealtySortingStrategy(
+                    realtySorter,
+                    new AllFieldsSortingStrategy()
+            );
+            case ByEvenCost -> new EvenCostRealtySortingStrategy(realtySorter);
         };
-
-        var comparator = sortingStrategy.getComparator();
 
         var realty = realtyGetter.getRealty(null);
 
-        var sortedRealty = realtySorter.sort(realty, comparator);
+        var sortedRealty = sortingStrategy.sort(realty);
 
         realtyListComponent.print(sortedRealty);
     }

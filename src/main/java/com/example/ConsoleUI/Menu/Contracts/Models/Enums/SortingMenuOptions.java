@@ -7,7 +7,8 @@ public enum SortingMenuOptions implements EnumWithNumber {
     ByAddress(1),
     ByArea(2),
     ByCost(3),
-    ByAllFields(4);
+    ByAllFields(4),
+    ByEvenCost(5);
 
     private final int value;
 
