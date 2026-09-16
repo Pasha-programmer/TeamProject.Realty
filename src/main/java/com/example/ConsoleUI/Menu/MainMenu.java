@@ -10,7 +10,13 @@ import com.example.ConsoleUI.Menu.Components.RealtyListComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleDataComponent;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.Contracts.Models.Enums.MainMenuOptions;
-import com.example.ConsoleUI.Menu.Contracts.Strategies.*;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.DataInputStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.ExitStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.NotImplementedStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.SearchCountStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.ShowDataStrategy;
+import com.example.ConsoleUI.Menu.Contracts.Strategies.SortingDataStrategy;
+import com.example.Domain.Contracts.Realty.RealtyGenerator;
 import com.example.Domain.Contracts.Realty.RealtyGetter;
 import com.example.Domain.Contracts.Realty.RealtySorter;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
@@ -22,19 +28,22 @@ public final class MainMenu extends ConsoleStageMenu {
             Scanner scanner,
             RealtyGetter realtyGetter,
             RealtySorter realtySorter,
-            RealtyUpdater realtyUpdater
+            RealtyUpdater realtyUpdater,
+            RealtyGenerator realtyGenerator
     ) {
         super(scanner);
         realtyListComponent = new RealtyListComponent(realtyGetter);
         this.realtyGetter = realtyGetter;
+        this.realtySorter = realtySorter;
         this.realtyUpdater = realtyUpdater;
-        sortingMenu = new SortingMenu(scanner, realtyGetter, realtySorter, realtyListComponent);
+        this.realtyGenerator = realtyGenerator;
     }
 
     private final ConsoleDataComponent<Collection<RealtyDto>> realtyListComponent;
     private final RealtyGetter realtyGetter;
-    private final ConsoleStageMenu sortingMenu;
+    private final RealtySorter realtySorter;
     private final RealtyUpdater realtyUpdater;
+    private final RealtyGenerator realtyGenerator;
 
     private final static SortedMap<MainMenuOptions, String> menuOptionsMap = new TreeMap<>(
         Map.ofEntries(
@@ -69,9 +78,9 @@ public final class MainMenu extends ConsoleStageMenu {
             // Получаем стратегию для выбранной опции
             var action = switch (choice){
                 case MainMenuOptions.CreateData ->
-                    new DataInputStrategy(scanner, realtyUpdater);
+                    new DataInputStrategy(scanner, realtyUpdater, realtyGenerator);
                 case MainMenuOptions.SortingData ->
-                    new SortingDataStrategy(sortingMenu);
+                    new SortingDataStrategy(scanner, realtyGetter, realtySorter);
                 case MainMenuOptions.ShowData ->
                     new ShowDataStrategy(realtyListComponent);
                 case MainMenuOptions.Search ->
