@@ -70,11 +70,11 @@ public class RealtyListComponent extends ConsoleDataComponent<Collection<RealtyD
 
     private String formatArea(RealtyDto realty) {
         var roundArea = Math.round(realty.getTotalArea() * 100) / 100.0;
-        return "Площадь: " + realty.getTotalArea() + " м2";
+        return "Площадь: " + roundArea + " м2";
     }
 
     private String formatCost(RealtyDto realty) {
-        var roundCost = new BigDecimal(String.valueOf(realty.getCost())).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        var roundCost = Math.round(new BigDecimal(String.valueOf(realty.getCost())).setScale(2, RoundingMode.HALF_UP).doubleValue() * 100) / 100.0;
 
         return "Стоимость: " + roundCost + " руб.";
     }
