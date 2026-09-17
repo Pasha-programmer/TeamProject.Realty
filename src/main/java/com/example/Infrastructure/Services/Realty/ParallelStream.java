@@ -62,9 +62,6 @@ public final class ParallelStream {
 
         @Override
         protected Long compute() {
-            System.out.println("compute [" + lo + ", " + hi + ") in "
-                    + Thread.currentThread().getName());
-
             var size = hi - lo;
 
             if (size <= THRESHOLD) {
