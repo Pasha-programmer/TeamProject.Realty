@@ -11,14 +11,17 @@ import com.example.Infrastructure.Services.Realty.Sorting.MergeSortRealtySorter;
 
 public class Main {
     static void main(String[] args) {
+
+        var realtyUpdaterService = new RealtyUpdaterService(new RealtyDtoValidator());
+
         try(var scanner = new Scanner(System.in)){
             ConsoleStageMenu mainMenu = new MainMenu(
                     scanner,
                     new RealtyGetterService(),
                     new MergeSortRealtySorter(),
-                    new RealtyUpdaterService(new RealtyDtoValidator()),
+                    realtyUpdaterService,
                     new RealtyGeneratorService(),
-                    new RealtyImportFromJsonService(new RealtyDtoValidator(), new JacksonJsonParserService<>()),
+                    new RealtyImportFromJsonService(new RealtyDtoValidator(), new JacksonJsonParserService<>(), realtyUpdaterService),
                     new RealtyExportToJsonService()
             );
             mainMenu.run();
