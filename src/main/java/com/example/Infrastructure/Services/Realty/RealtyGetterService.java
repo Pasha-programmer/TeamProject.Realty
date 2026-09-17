@@ -1,6 +1,8 @@
 package com.example.Infrastructure.Services.Realty;
 
+import java.lang.management.BufferPoolMXBean;
 import java.util.Collection;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.example.DataAccess.Data;
@@ -18,9 +20,11 @@ public class RealtyGetterService implements RealtyGetter {
     public Collection<RealtyDto> getRealty(Integer limit) {
         var data = Data.getRealty();
 
-        var filteredRealty = applyFilters(data, null, limit);
+        var realtyStream = data.stream();
 
-        return filteredRealty.stream()
+        var filteredRealty = applyFilters(realtyStream, null, limit);
+
+        return filteredRealty
             .map(this::mapRealtyDaoToDto)
             .toList();
     }
@@ -29,9 +33,9 @@ public class RealtyGetterService implements RealtyGetter {
     public Integer getRealtyCount(RealtyFilterParametersDto filterParameters) {
         var data = Data.getRealty();
 
-        var filteredRealty = applyFilters(data, filterParameters, null);
+        Predicate<RealtyDao> predicate = r -> allowFilters(r, filterParameters);
 
-        return filteredRealty.size();
+        return (int) ParallelStream.countIf(data, predicate);
     }
 
     @Override
@@ -42,25 +46,23 @@ public class RealtyGetterService implements RealtyGetter {
                 .map(this::mapRealtyDaoToDto)
                 .toList();
 
-        return (int)ParallelStream.getCountElement(realtyDtos, targetRealty);
+        return (int) ParallelStream.getCountElement(realtyDtos, targetRealty);
     }
 
     /**
      * Применить фильтрацию.
-     * @param realty Коллекция фильтруемых недвижимостей.
+     * @param realtyStream Стрим фильтруемых недвижимостей.
      * @param limit Ограничение на количество.
-     * @return Фильтрованная коллекция недвижимостей.
+     * @return Фильтрованный стрим недвижимостей.
      */
-    private Collection<RealtyDao> applyFilters(Collection<RealtyDao> realty, RealtyFilterParametersDto filterParameters, Integer limit){
-        var realtyStream = realty.stream();
-
+    private Stream<RealtyDao> applyFilters(Stream<RealtyDao> realtyStream, RealtyFilterParametersDto filterParameters, Integer limit){
         realtyStream = applyFilters(realtyStream, filterParameters);
 
         if (limit != null){
-            realtyStream = realtyStream.limit(limit);
+            realtyStream = realtyStream.unordered().limit(limit);
         }
 
-        return realtyStream.toList();
+        return realtyStream;
     }
 
     /**
@@ -74,27 +76,41 @@ public class RealtyGetterService implements RealtyGetter {
             return realtyStream;
         }
 
-        if (filterParameters.address != null && !filterParameters.address.isEmpty()){
-            realtyStream = realtyStream.filter(r -> r.address.contains(filterParameters.address));
+        return realtyStream.filter(r -> allowFilters(r, filterParameters));
+    }
+
+    /**
+     * Проверить, что модель соответствует фильтру.
+     * @param realtyDao Модель данных.
+     * @param filterParameters Фильтры.
+     * @return true - если модель соответствует фильтру, иначе false.
+     */
+    private Boolean allowFilters(RealtyDao realtyDao, RealtyFilterParametersDto filterParameters){
+        if (filterParameters == null){
+            return true;
         }
 
-        if (filterParameters.fromCost != null){
-            realtyStream = realtyStream.filter(r -> r.cost.compareTo(filterParameters.fromCost) >= 0);
+        if (filterParameters.address != null && !filterParameters.address.isEmpty() && !realtyDao.address.contains(filterParameters.address)){
+            return false;
         }
 
-        if (filterParameters.toCost != null){
-            realtyStream = realtyStream.filter(r -> r.cost.compareTo(filterParameters.toCost) <= 0);
+        if (filterParameters.fromCost != null && realtyDao.cost.compareTo(filterParameters.fromCost) < 0){
+            return false;
         }
 
-        if (filterParameters.fromTotalArea != null){
-            realtyStream = realtyStream.filter(r -> r.totalArea >= filterParameters.fromTotalArea);
+        if (filterParameters.toCost != null && realtyDao.cost.compareTo(filterParameters.toCost) > 0){
+            return false;
         }
 
-        if (filterParameters.toTotalArea != null){
-            realtyStream = realtyStream.filter(r -> r.totalArea <= filterParameters.toTotalArea);
+        if (filterParameters.fromTotalArea != null && realtyDao.totalArea < filterParameters.fromTotalArea){
+            return false;
         }
 
-        return realtyStream;
+        if (filterParameters.toTotalArea != null && realtyDao.totalArea > filterParameters.toTotalArea){
+            return false;
+        }
+
+        return true;
     }
 
     /**
