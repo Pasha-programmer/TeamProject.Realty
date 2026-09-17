@@ -23,10 +23,10 @@ public class RealtyImportFromJsonMenu extends ConsoleStageMenu {
     private final InputComponent<Path> inputFilePathComponent;
     private final RealtyImporter realtyImporter;
 
-    public RealtyImportFromJsonMenu(Scanner scanner) {
+    public RealtyImportFromJsonMenu(Scanner scanner, RealtyImporter realtyImporter) {
         super(scanner);
         this.inputFilePathComponent = new InputFilePathComponent(new InputFilePathComponentProperties(scanner, "json"));
-        this.realtyImporter = new RealtyImportFromJsonService(new RealtyDtoValidator(), new JacksonJsonParserService<>());
+        this.realtyImporter =  realtyImporter;
     }
 
     @Override

@@ -5,9 +5,8 @@ import java.util.Scanner;
 import com.example.ConsoleUI.Menu.Contracts.Models.Common.ConsoleStageMenu;
 import com.example.ConsoleUI.Menu.MainMenu;
 import com.example.Domain.Validators.RealtyDtoValidator;
-import com.example.Infrastructure.Services.Realty.RealtyGeneratorService;
-import com.example.Infrastructure.Services.Realty.RealtyGetterService;
-import com.example.Infrastructure.Services.Realty.RealtyUpdaterService;
+import com.example.Infrastructure.Services.External.JacksonJsonParserService;
+import com.example.Infrastructure.Services.Realty.*;
 import com.example.Infrastructure.Services.Realty.Sorting.MergeSortRealtySorter;
 
 public class Main {
@@ -18,7 +17,9 @@ public class Main {
                     new RealtyGetterService(),
                     new MergeSortRealtySorter(),
                     new RealtyUpdaterService(new RealtyDtoValidator()),
-                    new RealtyGeneratorService()
+                    new RealtyGeneratorService(),
+                    new RealtyImportFromJsonService(new RealtyDtoValidator(), new JacksonJsonParserService<>()),
+                    new RealtyExportToJsonService()
             );
             mainMenu.run();
         }

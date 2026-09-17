@@ -12,6 +12,7 @@ import com.example.ConsoleUI.Menu.Contracts.Strategies.InputStrategies.Generatio
 import com.example.ConsoleUI.Menu.Contracts.Strategies.InputStrategies.UserInputStrategy;
 import com.example.Domain.Contracts.Realty.RealtyGenerator;
 import com.example.ConsoleUI.Menu.Contracts.Strategies.RealtyImportFromJsonStrategy;
+import com.example.Domain.Contracts.Realty.RealtyImporter;
 import com.example.Domain.Contracts.Realty.RealtyUpdater;
 
 /**
@@ -24,11 +25,13 @@ public class RealtyDataInputMenu extends ConsoleStageMenu{
 
     private final RealtyUpdater realtySetter;
     private final RealtyGenerator realtyGenerator;
+    private final RealtyImporter realtyImporter;
 
-    public RealtyDataInputMenu(Scanner scanner, RealtyUpdater realtySetter, RealtyGenerator realtyGenerator){
+    public RealtyDataInputMenu(Scanner scanner, RealtyUpdater realtySetter, RealtyGenerator realtyGenerator, RealtyImporter realtyImporter){
         super(scanner);
         this.realtySetter = realtySetter;
         this.realtyGenerator = realtyGenerator;
+        this.realtyImporter = realtyImporter;
     }
     
     private final static SortedMap<InputMenuOptions, String> dataInputMenuOptionsMap = new TreeMap<>(
@@ -51,7 +54,7 @@ public class RealtyDataInputMenu extends ConsoleStageMenu{
                 case InputMenuOptions.UserInput ->
                     new UserInputStrategy(scanner, realtySetter);
                 case InputMenuOptions.ImportFromFile->
-                    new RealtyImportFromJsonStrategy(scanner);
+                    new RealtyImportFromJsonStrategy(scanner, realtyImporter);
                 case InputMenuOptions.RandomData ->
                     new GenerationInputStrategy(scanner, realtySetter, realtyGenerator);
                 case InputMenuOptions.Cancel ->
